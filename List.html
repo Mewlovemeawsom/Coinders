@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>รายการของฉัน</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&display=swap" rel="stylesheet"> 
+
+  <style>
+    body {
+      font-family: 'Kanit', sans-serif; /* 2. ตั้งค่าให้ใช้ฟอนต์ Kanit */
+      background: #f5f5f5;
+      margin: 0;
+      padding: 0;
+      padding-bottom: 70px;
+    }
+    .header {
+      text-align: center;
+      padding: 20px;
+      color: #124170;
+      font-weight: 400;
+    }
+
+    /* === Toggle Container + Indicator === */
+    .toggle-container {
+      position: relative;
+      display: inline-flex;
+      width: 200px;
+      background: #67C090;
+      border-radius: 30px;
+      overflow: hidden;
+      padding: 2px;
+      margin-top: 10px;
+      left: 120px;
+    }
+
+    .toggle-btn {
+      flex: 1;
+      background: transparent;
+      border: none;
+      padding: 8px 0;
+      font-size: 14px;
+      cursor: pointer;
+      color: #DDF4E7;
+      font-weight: 600;
+      z-index: 1;
+      transition: color 0.3s ease;
+    }
+
+    .toggle-btn.active {
+      color: #DDF4E7;
+    }
+
+    .toggle-indicator {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: calc(50% - 2px);
+      height: calc(100% - 4px);
+      background: #26667F;
+      border-radius: 30px;
+      transition: all 0.3s ease;
+      z-index: 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .toggle-container {
+        width: 150px;
+      }
+      .toggle-btn {
+        font-size: 12px;
+      }
+    }
+
+    /* Section แสดงผล */
+    .section {
+      display: none;
+    }
+    .section.active {
+      display: block;
+    }
+
+    /* หน้า “รวม” */
+    .card {
+      background: #fff;
+      border-radius: 14px;
+      margin: 10px;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center; 
+      justify-content: space-between;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      position: relative;
+    }
+
+    /* ตำแหน่งของจุดในหน้ารวม (ขวาบน) */
+    .summary-dot-wrapper {
+        position: absolute; 
+        top: 10px; 
+        right: 20px;
+        z-index: 10;
+    }
+    
+    /* สไตล์สำหรับไอคอนจุดสามจุดทั้งหมด */
+    .dot-icon {
+        color: #666666; /* สีจุด */
+        width: 20px;
+        height: 20px;
+    }
+
+    /* NEW: ทำให้จุดกดได้และดูดี */
+    .dot-button {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        display: flex; 
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* สไตล์ไอคอนหลัก */
+    .card-icon {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      margin-right: 15px;
+      background-color: transparent; 
+    }
+
+    /* สีไอคอนตามประเภท */
+    .icon-food {
+      color: #CC4C4C;
+    }
+    .icon-income {
+      color: #67C090;
+    }
+    .icon-expense {
+      color: #CC4C4C;
+    }
+
+    .card-info {
+      flex: 1;
+    }
+    /* ชื่อรายการ */
+    .card-info > div:first-child {
+      font-weight: 500; 
+      font-size: 17px; 
+    }
+
+    /* สไตล์สำหรับไอคอนสามเหลี่ยมและจำนวนเงิน */
+    .amount-text {
+      font-weight: bold;
+      font-size: 14px; 
+      display: flex;
+      align-items: center; 
+    }
+
+    .triangle-icon {
+      width: 16px; 
+      height: 16px;
+      margin-right: 5px; 
+      transition: transform 0.3s;
+    }
+    
+    .triangle-down {
+      transform: rotate(180deg);
+    }
+
+    /* วันที่ไปอยู่ขวาล่าง */
+    .date-text {
+      font-size: 11px; 
+      color: #777;
+      white-space: nowrap;
+    }
+    
+    /* จัดให้วันที่อยู่มุมขวาของรายการ */
+    .transaction-details {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: flex-end; 
+        align-self: flex-end; 
+        height: 100%; 
+    }
+
+    
+    .summary-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+    
+    .summary-left {
+        display: flex;
+        align-items: center;
+    }
+
+
+    /* หน้า “รายวัน” */
+    .date-group {
+      background: #fff;
+      border-radius: 10px;
+      margin: 10px;
+      padding: 15px;
+    }
+    
+    .date-header {
+      display: flex; 
+      justify-content: space-between; 
+      align-items: flex-start; 
+      margin-bottom: 10px; 
+    }
+
+    .date-text-only {
+      font-weight: bold; 
+      font-size: 16px;
+    }
+
+    .item-count-text {
+      font-size: 11px; 
+      color: #777; 
+      font-weight: normal; 
+      margin-top: 2px;
+    }
+    
+    .item-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .item-card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 10px;
+      width: 100px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .item-card .card-icon {
+        width: 40px;
+        height: 40px;
+        margin: auto;
+        margin-bottom: 5px;
+        background-color: transparent; 
+    }
+    
+    /* Wrapper สำหรับจัดกลุ่มจำนวนเงินและจุด (ในหน้ารายวัน) */
+    .amount-and-dot {
+        display: flex;
+        flex-direction: column;
+        align-items: center; 
+        margin-top: 5px; 
+    }
+
+    .item-card .amount-text {
+        font-size: 12px; 
+        margin-top: 0; 
+        justify-content: center;
+    }
+    
+    .item-card .triangle-icon {
+        width: 14px; 
+        height: 14px;
+    }
+    
+    /* จัดระยะห่างของจุดในหน้ารายวัน */
+    .daily-dot-icon {
+        margin-top: 2px;
+    }
+
+
+    /* ปุ่มเพิ่มรายการ */
+    .add-button {
+      display: block;
+      width: 25%;
+      height: 30px;
+      margin: 20px auto;
+      background: #26667F;
+      color: #fff;
+      text-align: center;
+      padding: 15px;
+      border-radius: 14px;
+      text-decoration: none;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #67C090; 
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.1); 
+      z-index: 1000; 
+    }
+
+    .nav-icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 8px; 
+      cursor: pointer;
+      color: #FFFFFF; /* สีไอคอนปกติเป็นสีขาว */
+      transition: color 0.3s;
+      text-decoration: none; 
+    }
+
+    .nav-icon svg, .nav-icon i { 
+      display: block;
+      width: 24px;
+      height: 24px;
+    }
+
+    .active-icon {
+      color: #124170; /* สีไอคอนเมื่อ Active (เปลี่ยนจาก #DDF4E7 เป็น #124170) */
+    }
+    
+    /* === Modal and Action Menu Styles (NEW) === */
+    
+    /* Action Menu (The "ลบ" option) */
+    #action-menu {
+        position: absolute;
+        z-index: 1000;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        width: 100px;
+        display: none; /* Default hidden */
+    }
+    #delete-option {
+        padding: 8px 15px;
+        border: none;
+        background: none;
+        width: 100%;
+        text-align: left;
+        cursor: pointer;
+        color: #CC4C4C;
+        font-weight: bold;
+        transition: background-color 0.1s;
+    }
+    #delete-option:hover {
+        background-color: #f5f5f5;
+    }
+
+    /* Confirmation Modal (Dark overlay) */
+    #confirmation-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 2000;
+        display: none; /* Default hidden */
+        justify-content: center;
+        align-items: center;
+    }
+    
+    /* Modal box content */
+    #confirmation-modal > div {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        width: 80%;
+        max-width: 300px;
+    }
+    
+    #confirmation-modal p {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 500;
+    }
+    
+    /* Modal buttons */
+    #cancel-btn, #confirm-btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+    #cancel-btn {
+        background: #ccc;
+        color: black;
+        margin-right: 10px;
+    }
+    #confirm-btn {
+        background: #CC4C4C;
+        color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h2>รายการของฉัน</h2>
+    <div class="toggle-container">
+      <button class="toggle-btn active" data-target="summary" id="btnTotal">รวม</button>
+      <button class="toggle-btn" data-target="daily" id="btnDaily">รายวัน</button>
+      <div class="toggle-indicator" id="toggleIndicator"></div>
+    </div>
+  </div>
+  
+  <svg style="display:none;" id="triangle-svg" viewBox="0 0 24 24"><path fill="currentColor" d="M16.21 16H7.79a1.76 1.76 0 0 1-1.59-1a2.1 2.1 0 0 1 .26-2.21l4.21-5.1a1.76 1.76 0 0 1 2.66 0l4.21 5.1A2.1 2.1 0 0 1 17.8 15a1.76 1.76 0 0 1-1.59 1"/></svg>
+
+  <div id="summary" class="section active">
+    
+    <div class="card">
+      <div class="summary-left">
+        <div class="card-icon icon-food">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M18.06 23h1.66c.84 0 1.53-.65 1.63-1.47L23 5.05h-5V1h-1.97v4.05h-4.97l.3 2.34c1.71.47 3.31 1.32 4.27 2.26c1.44 1.42 2.43 2.89 2.43 5.29zM1 22v-1h15.03v1c0 .54-.45 1-1.03 1H2c-.55 0-1-.46-1-1m15.03-7C16.03 7 1 7 1 15zM1 17h15v2H1z"/></svg>
+        </div>
+        <div class="card-info">
+          <div>อาหาร</div>
+          <div class="amount-text" style="color:#CC4C4C;">
+            <svg class="triangle-icon triangle-down" fill="currentColor" viewBox="0 0 24 24"><path d="M16.21 16H7.79a1.76 1.76 0 0 1-1.59-1a2.1 2.1 0 0 1 .26-2.21l4.21-5.1a1.76 1.76 0 0 1 2.66 0l4.21 5.1A2.1 2.1 0 0 1 17.8 15a1.76 1.76 0 0 1-1.59 1"/></svg>
+            100 THB
+          </div>
+        </div>
+      </div>
+      <div class="transaction-details">
+        <div class="date-text">2 ก.ย. 2025</div>
+      </div>
+      <div class="summary-dot-wrapper">
+        <button class="dot-button" onclick="showActionMenu(event)">
+          <svg class="dot-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="currentColor" d="M14 10.25a1.25 1.25 0 1 1 2.5 0a1.25 1.25 0 0 1-2.5 0m-5 0a1.25 1.25 0 1 1 2.5 0a1.25 1.25 0 0 1-2.5 0m-5 0a1.249 1.249 0 1 1 2.5 0a1.25 1.25 0 1 1-2.5 0"/></svg>
+        </button>
+      </div>
+    </div>
+    
+    <div class="card">
+      <div class="summary-left">
+        <div class="card-icon icon-food">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M18.06 23h1.66c.84 0 1.53-.65 1.63-1.47L23 5.05h-5V1h-1.97v4.05h-4.97l.3 2.34c1.71.47 3.31 1.32 4.27 2.26c1.44 1.42 2.43 2.89 2.43 5.29zM1 22v-1h15.03v1c0 .54-.45 1-1.03 1H2c-.55 0-1-.46-1-1m15.03-7C16.03 7 1 7 1 15zM1 17h15v2H1z"/></svg>
+        </div>
+        <div class="card-info">
+          <div>อาหาร</div>
+          <div class="amount-text" style="color:#CC4C4C;">
+            <svg class="triangle-icon triangle-down" fill="currentColor" viewBox="0 0 24 24"><path d="M16.21 16H7.79a1.76 1.76 0 0 1-1.59-1a2.1 2.1 0 0 1 .26-2.21l4.21-5.1a1.76 1.76 0 0 1 2.66 0l4.21 5.1A2.1 2.1 0 0 1 17.8 15a1.76 1.76 0 0 1-1.59 1"/></svg>
+            60 THB
+          </div>
+        </div>
+      </div>
+      <div class="transaction-details">
+        <div class="date-text">1 ก.ย. 2025</div>
+      </div>
+      <div class="summary-dot-wrapper">
+        <button class="dot-button" onclick="showActionMenu(event)">
+          <svg class="dot-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="currentColor" d="M14 10.25a1.25 1.25 0 1 1 2.5 0a1.25 1.25 0 0 1-2.5 0m-5 0a1.25 1.25 0 1 1 2.5 0a1.25 1.25 0 0 1-2.5 0m-5 0a1.249 1.249 0 1 1 2.5 0a1.25 1.25 0 1 1-2.5 0"/></svg>
+        </button>
+      </div>
+    </div>
+    
+    <div class="card">
+      <div class="summary-left">
+        <div class="card-icon icon-income">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><defs><path id="SVGgvnbobcx" d="M21.5 11v10h-19V11z"/></defs><g fill="none"><use href="#SVGgvnbobcx"/><path d="M12 13.5a2.5 2.5 0 1 1 0 5a2.5 2.5 0 0 1 0-5m5.136-7.209L19 5.67l1.824 5.333H3.002L3 11.004L14.146 2.1z"/><path stroke="currentColor" stroke-linecap="square" stroke-width="2" d="M21 11.003h-.176L19.001 5.67L3.354 11.003L3 11m-.5.004H3L14.146 2.1l2.817 3.95"/><g stroke="currentColor" stroke-linecap="square" stroke-width="2"><path d="M14.5 16a2.5 2.5 0 1 1-5 0a2.5 2.5 0 0 1 5 0Z"/><use href="#SVGgvnbobcx"/><path d="M2.5 11h2a2 2 0 0 1-2 2zm19 0h-2a2 2 0 0 0 2 2zm-19 10h2.002A2 2 0 0 0 2.5 18.998zm19 0h-2a2 2 0 0 1 2-2z"/></g></g></svg>
+        </div>
+        <div class="card-info">
+          <div>รายได้</div>
+          <div class="amount-text" style="color:#67C090;">
+            <svg class="triangle-icon triangle-up" fill="currentColor" viewBox="0 0 24 24"><path d="M16.21 16H7.79a1.76 1.76 0 0 1-1.59-1a2.1 2.1 0 0 1 .26-2.21l4.21-5.1a1.76 1.76 0 0 1 2.66 0l4.21 5.1A2.1 2.1 0 0 1 17.8 15a1.76 1.76 0 0 1-1.59 1"/></svg>
+            2,500 THB
+          </div>
+        </div>
+      </div>
+      <div class="transaction-details">
+        <div class="date-text">1 ก.ย. 2025</div>
+      </div>
+      <div class="summary-dot-wrapper">
+        <button class="dot-button" onclick="showActionMenu(event)">
+          <svg class="dot-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="currentColor" d="M14 10.25a1.25 1.25 0 1 1 2.5 0a1.25 1.25 0 0 1-2.5 0m-5 0a1.25 1.25 0 1 1 2.5 0a1.25 1.25 0 0 1-2.5 0m-5 0a1.249 1.249 0 1 1 2.5 0a1.25 1.25 0 1 1-2.5 0"/></svg>
+        </button>
+      </div>
+    </div>
+    
+    <div class="card">
+      <div class="summary-left">
+        <div class="card-icon icon-food">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M18.06 23h1.66c.84 0 1.53-.65 1.63-1.47L23 5.05h-5V1h-1.97v4.05h-4.97l.3 2.34c1.71.47 3.31 1.32 4.27 2.26c1.44 1.42 2.43 2.89 2.43 5.29zM1 22v-1h15.03v1c0 .54-.45 1-1.03 1H2c-.55 0-1-.46-1-1m15.03-7C16.03 7 1 7 1 15zM1 17h15v2H1z"/></svg>
+        </div>
+        <div class="card-info">
+          <div>อาหาร</div>
+          <div class="amount-text" style="color:#CC4C4C;">
+            <svg class="triangle-icon triangle-down" fill="currentColor" viewBox="0 0 24 24"><path d="M16.21 16H7.79a1.76 1.76 0 0 1-1.59-1a2.1 2.1 0 0 1 .26-2.21l4.21-5.1a1.76 1.76 0 0 1 2.66 0l4.21 5.1A2.1 2.1 0 0 1 17.8 15a1.76 1.76 0 0 1-1.59 1"/></svg>
+            45 THB
+          </div>
+        </div>
+      </div>
+      <div class="transaction-details">
+        <div class="date-text">1 ก.ย. 2025</div>
+      </div>
+      <div class="summary-dot-wrapper">
+        <button class="dot-button" onclick="showActionMenu(event)">
+          <svg class="dot-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="currentColor" d="M14 10.25a1.25 1.25 0 1 1 2.5 0a1.25 1.25 0 0 1-2.5 0m-5 0a1.25 1.25 0 1 1 2.5 0a1.25 1.25 0 0 1-2.5 0m-5 0a1.249 1.249 0 1 1 2.5 0a1.25 1.25 0 1 1-2.5 0"/></svg>
+        </button>
+      </div>
+    </div>
+    
+    <div class="card">
+      <div class="summary-left">
+        <div class="card-icon icon-expense">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M17 18c-1.11 0-2 .89-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2M1 2v2h2l3.6 7.59l-1.36 2.45c-.15.28-.24.61-.24.96a2 2 0 0 0 2 2h12v-2H7.42a.25.25 0 0 1-.25-.25q0-.075.03-.12L8.1 13h7.45c.75 0 1.41-.42 1.75-1.03l3.58-6.47c.07-.16.12-.33.12-.5a1 1 0 0 0-1-1H5.21l-.94-2M7 18c-1.11 0-2 .89-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2"/></svg>
+        </div>
+        <div class="card-info">
+          <div>ของใช้</div>
+          <div class="amount-text" style="color:#CC4C4C;">
+            <svg class="triangle-icon triangle-down" fill="currentColor" viewBox="0 0 24 24"><path d="M16.21 16H7.79a1.76 1.76 0 0 1-1.59-1a2.1 2.1 0 0 1 .26-2.21l4.21-5.1a1.76 1.76 0 0 1 2.66 0l4.21 5.1A2.1 2.1 0 0 1 17.8 15a1.76 1.76 0 0 1-1.59 1"/></svg>
+            93 THB
+          </div>
+        </div>
+      </div>
+      <div class="transaction-details">
+        <div class="date-text">1 ก.ย. 2025</div>
+      </div>
+      <div class="summary-dot-wrapper">
+        <button class="dot-button" onclick="showActionMenu(event)">
+          <svg class="dot-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="currentColor" d="M14 10.25a1.25 1.25 0 1 1 2.5 0a1.25 1.25 0 0 1-2.5 0m-5 0a1.25 1.25 0 1 1 2.5 0a1.25 1.25 0 0 1-2.5 0m-5 0a1.249 1.249 0 1 1 2.5 0a1.25 1.25 0 1 1-2.5 0"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="daily" class="section">
+    <div class="date-group">
+      <div class="date-header"><span class="date-text-only">2 ก.ย. 2025</span><span class="item-count-text">1 รายการ</span></div>
+      <div class="item-list">
+        <div class="item-card">
+          <div class="card-icon icon-food">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M18.06 23h1.66c.84 0 1.53-.65 1.63-1.47L23 5.05h-5V1h-1.97v4.05h-4.97l.3 2.34c1.71.47 3.31 1.32 4.27 2.26c1.44 1.42 2.43 2.89 2.43 5.29zM1 22v-1h15.03v1c0 .54-.45 1-1.03 1H2c-.55 0-1-.46-1-1m15.03-7C16.03 7 1 7 1 15zM1 17h15v2H1z"/></svg>
+          </div>
+          <div>อาหาร</div>
+          <div class="amount-and-dot"> 
+            <div class="amount-text" style="color:#CC4C4C;">
+              <svg class="triangle-icon triangle-down" fill="currentColor" viewBox="0 0 24 24"><path d="M16.21 16H7.79a1.76 1.76 0 0 1-1.59-1a2.1 2.1 0 0 1 .26-2.21l4.21-5.1a1.76 1.76 0 0 1 2.66 0l4.21 5.1A2.1 2.1 0 0 1 17.8 15a1.76 1.76 0 0 1-1.59 1"/></svg>
+              100 THB
+            </div>
+            <button class="dot-button daily-dot-icon" onclick="showActionMenu(event)">
+              <svg class="dot-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="currentColor" d="M14 10.25a1.25 1.25 0 1 1 2.5 0a1.25 1.25 0 0 1-2.5 0m-5 0a1.25 1.25 0 1 1 2.5 0a1.25 1.25 0 0 1-2.5 0m-5 0a1.249 1.249 0 1 1 2.5 0a1.25 1.25 0 1 1-2.5 0"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="date-group">
+      <div class="date-header"><span class="date-text-only">1 ก.ย. 2025</span><span class="item-count-text">4 รายการ</span></div>
+      <div class="item-list">
+        <div class="item-card">
+          <div class="card-icon icon-food"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M18.06 23h1.66c.84 0 1.53-.65 1.63-1.47L23 5.05h-5V1h-1.97v4.05h-4.97l.3 2.34c1.71.47 3.31 1.32 4.27 2.26c1.44 1.42 2.43 2.89 2.43 5.29zM1 22v-1h15.03v1c0 .54-.45 1-1.03 1H2c-.55 0-1-.46-1-1m15.03-7C16.03 7 1 7 1 15zM1 17h15v2H1z"/></svg></div>
+          <div>อาหาร</div>
+          <div class="amount-and-dot"> 
+            <div class="amount-text" style="color:#CC4C4C;">
+              <svg class="triangle-icon triangle-down" fill="currentColor" viewBox="0 0 24 24"><path d="M16.21 16H7.79a1.76 1.76 0 0 1-1.59-1a2.1 2.1 0 0 1 .26-2.21l4.21-5.1a1.76 1.76 0 0 1 2.66 0l4.21 5.1A2.1 2.1 0 0 1 17.8 15a1.76 1.76 0 0 1-1.59 1"/></svg>
+              60 THB
+            </div>
+            <button class="dot-button daily-dot-icon" onclick="showActionMenu(event)">
+              <svg class="dot-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="currentColor" d="M14 10.25a1.25 1.25 0 1 1 2.5 0a1.25 1.25 0 0 1-2.5 0m-5 0a1.25 1.25 0 1 1 2.5 0a1.25 1.25 0 0 1-2.5 0m-5 0a1.249 1.249 0 1 1 2.5 0a1.25 1.25 0 1 1-2.5 0"/></svg>
+            </button>
+          </div>
+        </div>
+        
+        <div class="item-card">
+          <div class="card-icon icon-income">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><defs><path id="SVGgvnbobcx" d="M21.5 11v10h-19V11z"/></defs><g fill="none"><use href="#SVGgvnbobcx"/><path d="M12 13.5a2.5 2.5 0 1 1 0 5a2.5 2.5 0 0 1 0-5m5.136-7.209L19 5.67l1.824 5.333H3.002L3 11.004L14.146 2.1z"/><path stroke="currentColor" stroke-linecap="square" stroke-width="2" d="M21 11.003h-.176L19.001 5.67L3.354 11.003L3 11m-.5.004H3L14.146 2.1l2.817 3.95"/><g stroke="currentColor" stroke-linecap="square" stroke-width="2"><path d="M14.5 16a2.5 2.5 0 1 1-5 0a2.5 2.5 0 0 1 5 0Z"/><use href="#SVGgvnbobcx"/><path d="M2.5 11h2a2 2 0 0 1-2 2zm19 0h-2a2 2 0 0 0 2 2zm-19 10h2.002A2 2 0 0 0 2.5 18.998zm19 0h-2a2 2 0 0 1 2-2z"/></g></g></svg>
+          </div>
+          <div>รายได้</div>
+          <div class="amount-and-dot"> 
+            <div class="amount-text" style="color:#67C090;">
+              <svg class="triangle-icon triangle-up" fill="currentColor" viewBox="0 0 24 24"><path d="M16.21 16H7.79a1.76 1.76 0 0 1-1.59-1a2.1 2.1 0 0 1 .26-2.21l4.21-5.1a1.76 1.76 0 0 1 2.66 0l4.21 5.1A2.1 2.1 0 0 1 17.8 15a1.76 1.76 0 0 1-1.59 1"/></svg>
+              2,500 THB
+            </div>
+            <button class="dot-button daily-dot-icon" onclick="showActionMenu(event)">
+              <svg class="dot-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="currentColor" d="M14 10.25a1.25 1.25 0 1 1 2.5 0a1.25 1.25 0 0 1-2.5 0m-5 0a1.25 1.25 0 1 1 2.5 0a1.25 1.25 0 0 1-2.5 0m-5 0a1.249 1.249 0 1 1 2.5 0a1.25 1.25 0 1 1-2.5 0"/></svg>
+            </button>
+          </div>
+        </div>
+        
+        <div class="item-card">
+          <div class="card-icon icon-food"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M18.06 23h1.66c.84 0 1.53-.65 1.63-1.47L23 5.05h-5V1h-1.97v4.05h-4.97l.3 2.34c1.71.47 3.31 1.32 4.27 2.26c1.44 1.42 2.43 2.89 2.43 5.29zM1 22v-1h15.03v1c0 .54-.45 1-1.03 1H2c-.55 0-1-.46-1-1m15.03-7C16.03 7 1 7 1 15zM1 17h15v2H1z"/></svg></div>
+          <div>อาหาร</div>
+          <div class="amount-and-dot"> 
+            <div class="amount-text" style="color:#CC4C4C;">
+              <svg class="triangle-icon triangle-down" fill="currentColor" viewBox="0 0 24 24"><path d="M16.21 16H7.79a1.76 1.76 0 0 1-1.59-1a2.1 2.1 0 0 1 .26-2.21l4.21-5.1a1.76 1.76 0 0 1 2.66 0l4.21 5.1A2.1 2.1 0 0 1 17.8 15a1.76 1.76 0 0 1-1.59 1"/></svg>
+              45 THB
+            </div>
+            <button class="dot-button daily-dot-icon" onclick="showActionMenu(event)">
+              <svg class="dot-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="currentColor" d="M14 10.25a1.25 1.25 0 1 1 2.5 0a1.25 1.25 0 0 1-2.5 0m-5 0a1.25 1.25 0 1 1 2.5 0a1.25 1.25 0 0 1-2.5 0m-5 0a1.249 1.249 0 1 1 2.5 0a1.25 1.25 0 1 1-2.5 0"/></svg>
+            </button>
+          </div>
+        </div>
+        
+        <div class="item-card">
+          <div class="card-icon icon-expense"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M17 18c-1.11 0-2 .89-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2M1 2v2h2l3.6 7.59l-1.36 2.45c-.15.28-.24.61-.24.96a2 2 0 0 0 2 2h12v-2H7.42a.25.25 0 0 1-.25-.25q0-.075.03-.12L8.1 13h7.45c.75 0 1.41-.42 1.75-1.03l3.58-6.47c.07-.16.12-.33.12-.5a1 1 0 0 0-1-1H5.21l-.94-2M7 18c-1.11 0-2 .89-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2"/></svg></div>
+          <div>ของใช้</div>
+          <div class="amount-and-dot"> 
+            <div class="amount-text" style="color:#CC4C4C;">
+              <svg class="triangle-icon triangle-down" fill="currentColor" viewBox="0 0 24 24"><path d="M16.21 16H7.79a1.76 1.76 0 0 1-1.59-1a2.1 2.1 0 0 1 .26-2.21l4.21-5.1a1.76 1.76 0 0 1 2.66 0l4.21 5.1A2.1 2.1 0 0 1 17.8 15a1.76 1.76 0 0 1-1.59 1"/></svg>
+              93 THB
+            </div>
+            <button class="dot-button daily-dot-icon" onclick="showActionMenu(event)">
+              <svg class="dot-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="currentColor" d="M14 10.25a1.25 1.25 0 1 1 2.5 0a1.25 1.25 0 0 1-2.5 0m-5 0a1.25 1.25 0 1 1 2.5 0a1.25 1.25 0 0 1-2.5 0m-5 0a1.249 1.249 0 1 1 2.5 0a1.25 1.25 0 1 1-2.5 0"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a href="record.html" class="add-button">+ เพิ่มรายการ</a>
+
+  <div class="footer">
+
+    <div class="bottom-nav">
+  <a href="hah.html" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m3 9l9-7l9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M9 22V12h6v10"/></g></svg>
+  </a>
+
+  <a href="List.html" class="nav-icon active-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M3 5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm6 0H5v4h4zm4 0a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2zm6 0h-4v4h4zM3 15a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm6 0H5v4h4zm4 0a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2zm6 0h-4v4h4z"/></svg>
+  </a>
+
+  <a href="graph.html" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M2.7 17.625q-.3-.3-.288-.712t.288-.688l5.275-5.35Q8.55 10.3 9.4 10.3t1.425.575l2.575 2.6l5.2-5.15H17q-.425 0-.712-.288T16 7.326t.288-.712t.712-.288h4q.425 0 .713.288t.287.712v4q0 .425-.288.713t-.712.287t-.712-.287t-.288-.713v-1.6L14.825 14.9q-.575.575-1.425.575t-1.425-.575L9.4 12.325l-5.3 5.3q-.275.275-.7.275t-.7-.275"/></svg>
+  </a>
+
+  <a href="Profile.html" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M4 18q-.425 0-.712-.288T3 17t.288-.712T4 16h16q.425 0 .713.288T21 17t-.288.713T20 18zm0-5q-.425 0-.712-.288T3 12t.288-.712T4 11h16q.425 0 .713.288T21 12t-.288.713T20 13zm0-5q-.425 0-.712-.288T3 7t.288-.712T4 6h16q.425 0 .713.288T21 7t-.288.713T20 8z"/></svg>
+  </a>
+</div>
+  </div>
+  
+  <div id="action-menu" style="display:none;">
+    <button id="delete-option">ลบ</button>
+  </div>
+
+  <div id="confirmation-modal">
+    <div>
+      <p>คุณต้องการลบรายการนี้หรือไม่</p>
+      <div style="margin-top: 20px;">
+        <button id="cancel-btn">ยกเลิก</button>
+        <button id="confirm-btn">ยืนยัน</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Toggle ปุ่มใหม่ + indicator animation 
+    const toggleIndicator = document.getElementById('toggleIndicator'); // ใช้ชื่อเดิมจากโค้ดฉบับเต็ม
+    const btnTotal = document.getElementById('btnTotal');
+    const btnDaily = document.getElementById('btnDaily');
+    const sections = document.querySelectorAll('.section');
+    const buttons = [btnTotal, btnDaily]; // เพิ่ม array สำหรับใช้งานร่วมกับโค้ดตัวอย่าง
+
+    function updateIndicator(targetButton) {
+        if (targetButton.id === 'btnTotal') {
+            toggleIndicator.style.transform = 'translateX(0%)';
+        } else {
+            toggleIndicator.style.transform = 'translateX(100%)';
+        }
+    }
+
+    function setActiveTab(clickedButton) {
+        buttons.forEach(btn => {
+            btn.classList.remove('active');
+            btn.style.color = '#DDF4E7';
+        });
+        clickedButton.classList.add('active');
+        clickedButton.style.color = '#fff';
+        updateIndicator(clickedButton);
+
+        sections.forEach(sec => sec.classList.remove('active'));
+        document.getElementById(clickedButton.getAttribute('data-target')).classList.add('active');
+    }
+    
+    // เชื่อม Event listener สำหรับ Toggle
+    buttons.forEach(btn => {
+        btn.addEventListener('click', () => setActiveTab(btn));
+    });
+
+    // ตั้งค่าเริ่มต้น (หากต้องการให้ทำงานทันทีเมื่อโหลดหน้า)
+    updateIndicator(btnTotal); 
+    if(btnTotal) btnTotal.style.color = '#fff'; 
+    // สิ้นสุดส่วน Toggle
+
+    // === Modal and Menu Logic ===
+    const actionMenu = document.getElementById('action-menu');
+    const confirmationModal = document.getElementById('confirmation-modal');
+    const deleteOptionBtn = document.getElementById('delete-option');
+    const cancelBtn = document.getElementById('cancel-btn');
+    const confirmBtn = document.getElementById('confirm-btn');
+    
+    // ฟังก์ชันแสดงเมนูการดำเนินการ ("ลบ")
+    function showActionMenu(event) {
+        // ปิดเมนูที่เปิดอยู่ก่อน (หากมี)
+        hideActionMenu();
+
+        event.stopPropagation();
+        
+        // คำนวณตำแหน่งและแสดงเมนู
+        const button = event.currentTarget;
+        const rect = button.getBoundingClientRect();
+        
+        // ปรับการคำนวณตำแหน่งให้ถูกต้อง
+        actionMenu.style.top = `${rect.bottom + window.scrollY}px`; 
+        actionMenu.style.left = `${rect.right + window.scrollX - 100}px`; 
+        actionMenu.style.display = 'block';
+
+        // เพิ่ม listener เพื่อปิดเมนูเมื่อคลิกที่อื่น
+        document.addEventListener('click', hideActionMenuOnce, { once: true });
+    }
+
+    // ฟังก์ชันปิดเมนู
+    function hideActionMenu() {
+        actionMenu.style.display = 'none';
+        document.removeEventListener('click', hideActionMenuOnce);
+    }
+    
+    // ฟังก์ชันปิดเมนูแบบ One-time listener
+    function hideActionMenuOnce(event) {
+        if (event.target.closest('#action-menu')) {
+            return;
+        }
+        hideActionMenu();
+    }
+
+    // ฟังก์ชันแสดง Modal ยืนยัน
+    function showConfirmationModal() {
+        // ปิด Action Menu ก่อน
+        hideActionMenu();
+        // แสดง Modal โดยใช้ 'flex' เพื่อให้จัดองค์ประกอบตรงกลาง
+        confirmationModal.style.display = 'flex';
+    }
+
+    // ฟังก์ชันซ่อน Modal
+    function hideConfirmationModal() {
+        confirmationModal.style.display = 'none';
+    }
+
+    // เชื่อมต่อ Event listeners
+    
+    // เมื่อกด "ลบ" ในเมนู
+    deleteOptionBtn.addEventListener('click', showConfirmationModal);
+    
+    // เมื่อกด "ยกเลิก" ใน Modal
+    cancelBtn.addEventListener('click', hideConfirmationModal);
+    
+    // เมื่อกด "ยืนยัน" ใน Modal
+    confirmBtn.addEventListener('click', () => {
+        // โค้ดสำหรับลบรายการจะอยู่ที่นี่ (ในโปรเจกต์จริง)
+        hideConfirmationModal();
+    });
+
+    // ===================================
+    // *** ส่วนที่แก้ไข: JavaScript สำหรับแถบนำทางด้านล่าง ***
+    // (เปลี่ยนตัวเลือก CSS selector ให้ตรงกับ HTML ใหม่)
+    // ===================================
+    const footerIcons = document.querySelectorAll('.bottom-nav .nav-icon');
+
+    footerIcons.forEach(icon => {
+        icon.addEventListener('click', function() {
+            // โค้ดสำหรับจัดการ Active state 
+            footerIcons.forEach(i => i.classList.remove('active-icon'));
+            this.classList.add('active-icon');
+        });
+    });
+    // ===================================
+    // *** สิ้นสุดส่วนแก้ไข JavaScript ***
+    // ===================================
+</script>
+</body>
+</html>

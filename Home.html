@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Budget App UI</title>
+  
+  <link rel="stylesheet" href="Home.css"> 
+  
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="app-container">
+    <div class="status-bar">
+      
+      <div class="status-icons">
+        
+      </div>
+    </div>
+
+    <header class="app-header">
+     
+      <div class="header-spacer"></div>
+
+      <div class="header-center">
+        <div class="header-title">ภาพรวม</div>
+        <div class="account-selector">
+          บัญชีของฉัน 1 
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16.21 16H7.79a1.76 1.76 0 0 1-1.59-1a2.1 2.1 0 0 1 .26-2.21l4.21-5.1a1.76 1.76 0 0 1 2.66 0l4.21 5.1A2.1 2.1 0 0 1 17.8 15a1.76 1.76 0 0 1-1.59 1"/></svg>
+        </div>
+      </div>
+      
+            <div class="profile-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512"><path fill="currentColor" d="M258.9 48C141.92 46.42 46.42 141.92 48 258.9c1.56 112.19 92.91 203.54 205.1 205.1c117 1.6 212.48-93.9 210.88-210.88C462.44 140.91 371.09 49.56 258.9 48m126.42 327.25a4 4 0 0 1-6.14-.32a124.3 124.3 0 0 0-32.35-29.59C321.37 329 289.11 320 256 320s-65.37 9-90.83 25.34a124.2 124.2 0 0 0-32.35 29.58a4 4 0 0 1-6.14.32A175.32 175.32 0 0 1 80 259c-1.63-97.31 78.22-178.76 175.57-179S432 158.81 432 256a175.32 175.32 0 0 1-46.68 119.25"/><path fill="currentColor" d="M256 144c-19.72 0-37.55 7.39-50.22 20.82s-19 32-17.57 51.93C191.11 256 221.52 288 256 288s64.83-32 67.79-71.24c1.48-19.74-4.8-38.14-17.68-51.82C293.39 151.44 275.59 144 256 144"/></svg>
+      </div>
+    </header>
+
+    <main class="content-area">
+      
+      <div class="card account-card">
+        <div class="card-header">
+          
+          <div class="account-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M22.005 6h-7a6 6 0 0 0 0 12h7v2a1 1 0 0 1-1 1h-18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h18a1 1 0 0 1 1 1zm-7 2h8v8h-8a4 4 0 1 1 0-8m0 3v2h3v-2z"/></svg>
+          </div>
+
+          <div class="account-info">
+            <span class="account-name">บัญชีของฉัน 1</span>
+            <div class="account-tags">
+              <span class="tag tag-blue">5 รายการ</span> 
+              <span class="tag tag-green">2 วัน</span> 
+            </div>
+          </div>
+        </div>
+        
+        <div class="info-row income">
+          <span>รายรับ</span>
+          <span class="amount">2,500 <span class="currency">THB</span></span>
+        </div>
+        <div class="info-row expense">
+          <span>รายจ่าย</span>
+          <span class="amount">298 <span class="currency">THB</span></span>
+        </div>
+        <div class="info-row total">
+          <span>รวม</span>
+          <span class="amount">2,202 <span class="currency">THB</span></span>
+        </div>
+      </div>
+
+      <section class="budget-section">
+        <h2>งบประมาณ</h2>
+        
+        <div class="budget-row">
+          <span class="budget-title">รายวัน</span>
+          <div class="progress-bar-container">
+            <div class="progress-bar" style="width: 66%;"></div>
+          </div>
+          <span class="budget-amount">150 THB</span>
+          <span class="budget-status">ถูกใช้ไปแล้ว 66 %</span>
+        </div>
+
+        <div class="budget-row">
+          <span class="budget-title">รายเดือน</span>
+          <div class="progress-bar-container">
+            <div class="progress-bar" style="width: 6%;"></div>
+          </div>
+          <span class="budget-amount">5,000 THB</span>
+          <span class="budget-status">ถูกใช้ไปแล้ว 6 %</span>
+        </div>
+      </section>
+
+      <div class="add-button-container">
+        <button class="add-button">+ เพิ่มรายการ</button>
+      </div>
+    </main>
+
+    <nav class="bottom-nav">
+      <div class="homeicon">
+   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m3 9l9-7l9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M9 22V12h6v10"/></g></svg>
+  </div>
+  <div class="homeicon active-icon">
+   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M3 5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm6 0H5v4h4zm4 0a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2zm6 0h-4v4h4zM3 15a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm6 0H5v4h4zm4 0a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2zm6 0h-4v4h4z"/></svg>
+  </div>
+  <div class="homeicon">
+   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M2.7 17.625q-.3-.3-.288-.712t.288-.688l5.275-5.35Q8.55 10.3 9.4 10.3t1.425.575l2.575 2.6l5.2-5.15H17q-.425 0-.712-.288T16 7.326t.288-.712t.712-.288h4q.425 0 .713.288t.287.712v4q0 .425-.288.713t-.712.287t-.712-.287t-.288-.713v-1.6L14.825 14.9q-.575.575-1.425.575t-1.425-.575L9.4 12.325l-5.3 5.3q-.275.275-.7.275t-.7-.275"/></svg>
+  </div>
+  <div class="homeicon">
+   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M4 18q-.425 0-.712-.288T3 17t.288-.712T4 16h16q.425 0 .713.288T21 17t-.288.713T20 18zm0-5q-.425 0-.712-.288T3 12t.288-.712T4 11h16q.425 0 .713.288T21 12t-.288.713T20 13zm0-5q-.425 0-.712-.288T3 7t.288-.712T4 6h16q.425 0 .713.288T21 7t-.288.713T20 8z"/></svg>
+  </div>
+    </nav>
+  </div>
+
+</body>
+</html>

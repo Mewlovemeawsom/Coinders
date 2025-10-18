@@ -1,0 +1,95 @@
+:root {
+  --green: #6FCF97;
+  --gray: #9AA0A6;
+  --bg: #F5F6F5;
+  --white: #fff;
+  --radius: 14px;
+  --font: 'Noto Sans Thai', sans-serif;
+}
+*{box-sizing:border-box;font-family:var(--font);margin:0;padding:0;}
+body{
+  background:#f5f5f5;
+  display:flex;justify-content:center;align-items:center;
+  flex-direction:column;gap:20px;
+  height:100vh;
+}
+.open-btn{
+  background:var(--green);
+  border:none;
+  border-radius:12px;
+  color:#fff;
+  font-weight:600;
+  padding:12px 24px;
+  cursor:pointer;
+}
+
+/* Popup */
+.overlay{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,0.4);
+  display:none;
+  align-items:center;justify-content:center;
+  z-index:10;
+}
+.overlay.show{display:flex;}
+.modal{
+  background:var(--white);
+  border-radius:20px;
+  width:90%;max-width:420px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.15);
+  padding:20px;
+  display:flex;flex-direction:column;
+  gap:12px;
+}
+.modal-header{
+  display:flex;justify-content:space-between;align-items:center;
+}
+.modal-header h3{font-size:17px;font-weight:600;color:#1f1f1f;}
+.close-btn{
+  border:none;background:none;font-size:20px;cursor:pointer;color:#333;
+}
+.account-item,.member-item{
+  background:#ECF9F1;
+  border-radius:12px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 14px;margin-bottom:10px;
+}
+.account-item strong,.member-item strong{font-size:14px;}
+.account-item p,.member-item p{font-size:12px;color:#666;}
+.delete-btn{
+  background:#EB5757;
+  color:white;
+  border:none;
+  border-radius:8px;
+  padding:6px 12px;
+  font-size:13px;
+  cursor:pointer;
+}
+.new-account input,.search-box input{
+  width:100%;
+  border:1px solid #ddd;
+  border-radius:10px;
+  padding:10px 12px;
+}
+.modal-footer{
+  display:flex;justify-content:space-between;gap:10px;
+}
+.cancel-btn,.confirm-btn{
+  flex:1;padding:10px 0;
+  border:none;border-radius:10px;font-weight:600;cursor:pointer;
+}
+.cancel-btn{background:#E0E0E0;}
+.confirm-btn{background:var(--green);color:white;}
+
+/* สมาชิก popup */
+.member-item{
+  background:#F7F7F7;
+  justify-content:flex-start;
+  gap:10px;
+}
+.member-item.active{background:#ECF9F1;}
+.member-item i{font-size:20px;color:#213344;}
+.member-item input[type="radio"]{margin-left:auto;}
+.add-member{
+  font-weight:600;color:#2f8061;margin:8px 0;
+}

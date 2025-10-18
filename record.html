@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>เพิ่มรายการ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="record.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+ 
+<!-- Popup: ปฏิทิน -->
+<div class="overlay" id="calendarModal">
+  <div class="calendar-modal">
+    <div class="calendar-nav">
+      <button id="prevMonth"><i class="fa-solid fa-chevron-left"></i></button>
+      <div id="monthLabel">ตุลาคม 2568</div>
+      <button id="nextMonth"><i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+
+    <div class="calendar-weekdays">
+      <div>อา</div><div>จ</div><div>อ</div><div>พ</div>
+      <div>พฤ</div><div>ศ</div><div>ส</div>
+    </div>
+
+    <div class="calendar-grid" id="calendarDays"></div>
+
+    <div class="calendar-actions">
+      <button class="cancel-btn" id="cancelCalendar">ยกเลิก</button>
+      <button class="ok-btn" id="okCalendar">ตกลง</button>
+    </div>
+  </div>
+</div>
+
+
+    <!-- Header -->
+  <header class="header">
+    <button class="back-btn" onclick="history.back()">
+      <i class="fa-solid fa-chevron-left"></i>
+    </button>
+    <div class="title-wrap">
+      <h1>เพิ่มรายการ</h1>
+      <span>บัญชีของฉัน 1</span>
+    </div>
+  </header>
+
+  <!-- Form card -->
+  <main class="card">
+    <div class="field">
+      <label>วันที่</label>
+      <small>วันที่ของรายการ</small>
+      <div class="date-box">
+        <button class="icon-btn" id="prevDay"><i class="fa-solid fa-chevron-left"></i></button>
+        <div class="date-display" id="dateDisplay">2 ก.ย. 2025</div>
+        <button class="icon-btn" id="openCalendar"><i class="uil--calender"></i></button>
+        <button class="icon-btn" id="nextDay"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+<!-- หมวดหมู่ (กดแล้วขึ้นป็อปอัป) -->
+<div class="field">
+  <label>หมวดหมู่</label>
+  <small>รายรับหรือรายจ่าย</small>
+
+  <!-- กล่องที่ดูเหมือน select แต่กดแล้วเปิด modal -->
+  <div class="select-box" id="openCategory" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="catModal">
+    <div class="select-left">
+      <i class="mdi--food" id="catIcon"></i>
+      <span id="catText">อาหาร</span>
+    </div>
+    <i class="fa-solid fa-chevron-down"></i>
+  </div>
+</div>
+
+
+    <div class="field">
+      <label>หมายเหตุ</label>
+      <input type="text" class="input" placeholder="เช่น ข้าวเช้า, ค่าแท็กซี่" />
+    </div>
+
+    <div class="field">
+      <label>จำนวน</label>
+      <small>จำนวนเงิน</small>
+      <div class="amount-box">
+        <input type="number" class="input" placeholder="0.00" />
+        <span class="unit">THB</span>
+      </div>
+    </div>
+  </main>
+
+  <button class="save-btn">บันทึก</button>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="bottom-nav">
+  <a href="hah.html" class="nav-icon active-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m3 9l9-7l9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M9 22V12h6v10"/></g></svg>
+  </a>
+
+  <a href="List.html" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M3 5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm6 0H5v4h4zm4 0a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2zm6 0h-4v4h4zM3 15a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm6 0H5v4h4zm4 0a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2zm6 0h-4v4h4z"/></svg>
+  </a>
+
+  <a href="graph.html" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M2.7 17.625q-.3-.3-.288-.712t.288-.688l5.275-5.35Q8.55 10.3 9.4 10.3t1.425.575l2.575 2.6l5.2-5.15H17q-.425 0-.712-.288T16 7.326t.288-.712t.712-.288h4q.425 0 .713.288t.287.712v4q0 .425-.288.713t-.712.287t-.712-.287t-.288-.713v-1.6L14.825 14.9q-.575.575-1.425.575t-1.425-.575L9.4 12.325l-5.3 5.3q-.275.275-.7.275t-.7-.275"/></svg>
+  </a>
+
+  <a href="Profile.html" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M4 18q-.425 0-.712-.288T3 17t.288-.712T4 16h16q.425 0 .713.288T21 17t-.288.713T20 18zm0-5q-.425 0-.712-.288T3 12t.288-.712T4 11h16q.425 0 .713.288T21 12t-.288.713T20 13zm0-5q-.425 0-.712-.288T3 7t.288-.712T4 6h16q.425 0 .713.288T21 7t-.288.713T20 8z"/></svg>
+  </a>
+</div>
+  </nav>
+
+ <!-- Popup: หมวดหมู่ -->
+<div class="overlay" id="catModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="left">
+        <i class="fa-solid fa-grid-2"></i>
+        <span>หมวดหมู่</span>
+      </div>
+      <button class="close-btn" id="closeCat"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active" id="tabExpense">รายจ่าย</div>
+      <div class="tab" id="tabIncome">รายรับ</div>
+    </div>
+
+    <!-- รายจ่าย -->
+    <div class="grid" id="expenseGrid">
+      <div class="item active" data-icon="fa-burger" data-text="อาหาร"><i class="mdi--food"></i><span>อาหาร</span></div>
+      <div class="item" data-icon="fa-car" data-text="เดินทาง"><i class="tabler--car-filled"></i><span>เดินทาง</span></div>
+      <div class="item" data-icon="fa-user-tie" data-text="บริการ"><i class="hugeicons--waiter"></i><span>บริการ</span></div>
+      <div class="item" data-icon="fa-headphones" data-text="บันเทิง"><i class="tdesign--service-filled"></i><span>บันเทิง</span></div>
+      <div class="item" data-icon="fa-kit-medical" data-text="ค่ารักษา"><i class="material-symbols--local-hospital-outline"></i><span>ค่ารักษา</span></div>
+      <div class="item" data-icon="fa-cart-shopping" data-text="ของใช้"><i class="mdi--trolley"></i><span>ของใช้</span></div>
+      <div class="item" data-icon="fa-cat" data-text="สัตว์เลี้ยง"><i class="fa7-solid--cat"></i><span>สัตว์เลี้ยง</span></div>
+      <div class="item" data-icon="fa-sack-dollar" data-text="ภาษี"><i class="heroicons-outline--receipt-tax"></i><span>ภาษี</span></div>
+      <div class="item" data-icon="fa-book" data-text="การศึกษา"><i class="famicons--book"></i><span>การศึกษา</span></div>
+      <div class="item" data-icon="fa-tap" data-text="สารธารณูปโภค"><i class="mdi--tap"></i><span>สารธารณูปโภค</span></div>
+      <div class="item" data-icon="fa-people-group" data-text="ครอบครัว"><i class="material-symbols--family-restroom-rounded"></i><span>ครอบครัว</span></div>
+      <div class="item" data-icon="fa-house" data-text="ที่พัก"><i class="solar--home-bold"></i><span>ที่พัก</span></div>
+      <div class="item" data-icon="fa-hand-holding-heart" data-text="บริจาค"><i class="ph--hand-heart-fill"></i><span>บริจาค</span></div>
+      <div class="item" data-icon="fa-shield-heart" data-text="ประกันภัย"><i class="mingcute--shield-fill"></i><span>ประกันภัย</span></div>
+      <div class="item" data-icon="fa-note" data-text="อื่นๆ"><i class="ph--note"></i><span>อื่นๆ</span></div>
+    </div>
+
+    <!-- รายรับ -->
+    <div class="grid hidden" id="incomeGrid">
+      <div class="item" data-icon="fa-sack-dollar" data-text="รายได้"><i class="tdesign--money"></i><span>รายได้</span></div>
+      <div class="item" data-icon="fa-diamond" data-text="ได้พิเศษ"><i class="clarity--coin-bag-solid"></i><span>ได้พิเศษ</span></div>
+      <div class="item" data-icon="fa-gift" data-text="ของขวัญ"><i class="bxs--gift"></i><span>ของขวัญ</span></div>
+      <div class="item" data-icon="fa-store" data-text="ธุรกิจ"><i class="material-symbols--store"></i><span>ธุรกิจ</span></div>
+      <div class="item" data-icon="fa-chart-line" data-text="ปันผล"><i class="la--coins"></i><span>ปันผล</span></div>
+      <div class="item" data-icon="fa-note" data-text="อื่นๆ"><i class="ph--note"></i><span>อื่นๆ</span></div>
+    </div>
+
+    <button class="confirm-btn" id="confirmCat">ยืนยัน</button>
+  </div>
+</div>
+
+  
+
+  <script src="record.js"></script>
+</body>
+</html>

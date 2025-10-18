@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Profile UI</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+      body {
+        /* แก้ไข: เปลี่ยนฟอนต์หลักเป็น Kanit */
+        font-family: 'Kanit', sans-serif;
+        background-color: #f2f2f2;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        width: 100%;
+        height: 100vh;
+        background: #fff;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto; /* scroll เฉพาะแนวตั้ง */
+        padding-bottom: 70px; /* แก้ไข: เว้นพื้นที่ให้ navbar เป็น 70px เพื่อความสอดคล้อง */
+      }
+
+      /* ส่วนหัวโปรไฟล์ */
+      .profile-header {
+        background: #4db894;
+        color: white;
+        text-align: center;
+        padding: 50px 20px;
+        border-radius: 0 0 20px 20px;
+      }
+
+      .profile-header img {
+        width: 100px;
+        height: 100px;
+        border-radius: 15px;
+        background: #fff;
+        padding: 8px;
+        border: 2px solid #007aff;
+      }
+
+      .profile-header h2 {
+        margin: 10px 0 5px;
+        font-size: 20px;
+        color: #fff;
+      }
+
+      .profile-header p {
+        margin: 0;
+        font-size: 14px;
+        color: #f2f2f2;
+      }
+
+      .profile-header button {
+        padding: 10px 20px;
+        background-color: #ffc107;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        margin: 20px;
+        /* เพิ่ม: ใช้ฟอนต์ Kanit สำหรับปุ่ม */
+        font-family: 'Kanit', sans-serif;
+      }
+
+      .profile-header .btn-profile {
+        background: #ffc107;
+        color: #ffffff;
+        border: none;
+        padding: 10px px;
+        margin-top: 15px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+
+      /* เมนู */
+      .menu {
+        padding: 30px;
+        padding-top: 50px;
+      }
+
+      .menu-item {
+        display: flex;
+        align-items: flex-start;
+        background: #ffffff;
+        border-radius: 15px;
+        padding: 10px 16px;
+        margin: 20px 20px;
+        margin-top: 20px;
+        margin-bottom: 12px;
+        box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1),
+          -3px -3px 6px rgba(255, 255, 255, 0.8);
+        cursor: pointer;
+        transition: 0.2s;
+      }
+
+      .menu-item:hover {
+        background: #f9f9f9;
+      }
+
+      .menu-item i {
+        font-size: 20px;
+        margin-right: 12px;
+        margin-top: 3px;
+        color: #333;
+        padding: 5px;
+      }
+
+      .menu-item .text {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .menu-item .title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #222;
+        margin-bottom: 3px;
+      }
+
+      .menu-item .subtitle {
+        font-size: 13px;
+        color: #777;
+        line-height: 1.4;
+      }
+
+      .menu-item span {
+        font-size: 15px;
+        font-weight: 500;
+        color: #333;
+      }
+
+      /* ปุ่มด้านล่าง */
+      .action-buttons {
+        text-align: center;
+        padding: 20px;
+      }
+
+      .btn {
+        display: block;
+        width: 80%;
+        margin: 10px auto;
+        padding: 12px;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        font-weight: bold;
+        /* เพิ่ม: ใช้ฟอนต์ Kanit สำหรับปุ่ม */
+        font-family: 'Kanit', sans-serif;
+      }
+
+      .action-buttons {
+        padding-top: 2px;
+      }
+
+      .btn-logout {
+        background: #4db8ff;
+        color: rgb(21, 82, 174);
+        width: 150px;
+        border-radius: 2cap;
+      }
+
+      .btn-delete {
+        background: #ff6b6b;
+        color: rgb(167, 28, 28);
+        width: 150px;
+        border-radius: 2cap;
+      }
+
+      /* ==================================== */
+      /* *** ส่วนแก้ไข: CSS สำหรับแถบนำทางด้านล่าง *** */
+      /* ==================================== */
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: #67C090; /* สีพื้นหลังใหม่ที่ใช้ร่วมกัน */
+        display: flex;
+        justify-content: space-around;
+        padding: 10px 0;
+        box-shadow: 0 -2px 5px rgba(0,0,0,0.1); 
+        z-index: 1000; 
+      }
+
+      .nav-icon {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 8px; 
+        cursor: pointer;
+        color: #FFFFFF; /* สีไอคอนปกติเป็นสีขาว */
+        transition: color 0.3s;
+        text-decoration: none; 
+      }
+
+      .nav-icon svg, .nav-icon i { 
+        display: block;
+        width: 24px;
+        height: 24px;
+      }
+
+      .active-icon {
+        color: #124170; /* สีไอคอนเมื่อ Active */
+      }
+      /* ==================================== */
+      /* *** สิ้นสุดส่วนแก้ไข CSS *** */
+      /* ==================================== */
+
+
+      a {
+        text-decoration: none; /* ทำให้เส้นใต้หายไป */
+      }
+    </style>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <div class="profile-header">
+        <img src="chicken.png" alt="avatar" width="100" />
+        <h2 id="profileName">Chicken Wichianmat</h2>
+        <p>67012345@up.ac.th</p>
+        <a href="edit-profile.html">
+          <button>แก้ไขโปรไฟล์</button>
+        </a>
+      </div>
+
+      <a href="####" class="menu-item">
+        <i class="fa-regular fa-calendar"></i>
+        <div class="text">
+          <div class="title">ปฏิทิน</div>
+          <div class="subtitle">ดูสรุปรายรับรายจ่ายในรูปแบบปฏิทิน</div>
+        </div>
+      </a>
+
+      <a href="daily-budget.html">
+        <div class="menu-item">
+          <i class="fa-solid fa-coins"></i>
+          <div class="text">
+            <div class="title">งบประมาณรายวัน</div>
+            <div class="subtitle">วางแผนจำกัดรายจ่ายต่อวัน</div>
+          </div>
+        </div>
+      </a>
+
+      <a href="month-budget.html">
+        <div class="menu-item">
+          <i class="fa-solid fa-wallet"></i>
+          <div class="text">
+            <div class="title">งบประมาณรายเดือน</div>
+            <div class="subtitle">วางแผนจำกัดรายจ่ายต่อวัน</div>
+          </div>
+        </div>
+      </a>
+
+      <div class="menu-item">
+        <i class="fa-solid fa-gear"></i>
+        <div class="text">
+          <div class="title">ตั้งค่า</div>
+          <div class="subtitle">ตั้งค่ารายละเอียดเพิ่มเติม</div>
+        </div>
+      </div>
+
+      <div class="menu-item">
+        <i class="fa-solid fa-circle-info"></i>
+        <div class="text">
+          <div class="title">เกี่ยวกับ</div>
+          <div class="subtitle">เวอร์ชันและการอัพเดต</div>
+        </div>
+      </div>
+
+      <div class="action-buttons">
+        <a href="out.html"
+          ><button class="btn btn-logout">ออกจากระบบ</button></a
+        >
+        <a href="Delete.html"
+          ><button class="btn btn-delete">ลบบัญชีผู้ใช้งาน</button></a
+        >
+      </div>
+
+      <div class="bottom-nav">
+        <a href="hah.html" class="nav-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m3 9l9-7l9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M9 22V12h6v10"/></g></svg>
+        </a>
+
+        <a href="List.html" class="nav-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M3 5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm6 0H5v4h4zm4 0a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2zm6 0h-4v4h4zM3 15a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm6 0H5v4h4zm4 0a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2zm6 0h-4v4h4z"/></svg>
+        </a>
+
+        <a href="graph.html" class="nav-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M2.7 17.625q-.3-.3-.288-.712t.288-.688l5.275-5.35Q8.55 10.3 9.4 10.3t1.425.575l2.575 2.6l5.2-5.15H17q-.425 0-.712-.288T16 7.326t.288-.712t.712-.288h4q.425 0 .713.288t.287.712v4q0 .425-.288.713t-.712.287t-.712-.287t-.288-.713v-1.6L14.825 14.9q-.575.575-1.425.575t-1.425-.575L9.4 12.325l-5.3 5.3q-.275.275-.7.275t-.7-.275"/></svg>
+        </a>
+
+        <a href="Profile.html" class="nav-icon active-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M4 18q-.425 0-.712-.288T3 17t.288-.712T4 16h16q.425 0 .713.288T21 17t-.288.713T20 18zm0-5q-.425 0-.712-.288T3 12t.288-.712T4 11h16q.425 0 .713.288T21 12t-.288.713T20 13zm0-5q-.425 0-.712-.288T3 7t.288-.712T4 6h16q.425 0 .713.288T21 7t-.288.713T20 8z"/></svg>
+        </a>
+      </div>
+      </div>
+
+    <script>
+      // โหลดชื่อจาก localStorage ถ้ามี
+      const savedName = localStorage.getItem("profileName");
+      if (savedName) {
+        document.getElementById("profileName").textContent = savedName;
+      }
+      
+      // โค้ดส่วนนี้จะไม่มีการจัดการ Active Icon ด้วย JavaScript
+      // เพราะการเปลี่ยนหน้าจะรีเซ็ตสถานะและ Active Icon ถูกกำหนดด้วย class "active-icon" ใน HTML แล้ว
+    </script>
+  </body>
+</html>
