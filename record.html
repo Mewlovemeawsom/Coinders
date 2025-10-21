@@ -10,7 +10,6 @@
 </head>
 <body>
  
-<!-- Popup: ปฏิทิน -->
 <div class="overlay" id="calendarModal">
   <div class="calendar-modal">
     <div class="calendar-nav">
@@ -34,8 +33,7 @@
 </div>
 
 
-    <!-- Header -->
-  <header class="header">
+    <header class="header">
     <button class="back-btn" onclick="history.back()">
       <i class="fa-solid fa-chevron-left"></i>
     </button>
@@ -45,7 +43,6 @@
     </div>
   </header>
 
-  <!-- Form card -->
   <main class="card">
     <div class="field">
       <label>วันที่</label>
@@ -60,15 +57,15 @@
 
     <div class="divider"></div>
 
-<!-- หมวดหมู่ (กดแล้วขึ้นป็อปอัป) -->
 <div class="field">
   <label>หมวดหมู่</label>
   <small>รายรับหรือรายจ่าย</small>
 
-  <!-- กล่องที่ดูเหมือน select แต่กดแล้วเปิด modal -->
   <div class="select-box" id="openCategory" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="catModal">
     <div class="select-left">
-      <i class="mdi--food" id="catIcon"></i>
+      <div class="category-icon" id="catIcon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M18.06 23h1.66c.84 0 1.53-.65 1.63-1.47L23 5.05h-5V1h-1.97v4.05h-4.97l.3 2.34c1.71.47 3.31 1.32 4.27 2.26c1.44 1.42 2.43 2.89 2.43 5.29zM1 22v-1h15.03v1c0 .54-.45 1-1.03 1H2c-.55 0-1-.46-1-1m15.03-7C16.03 7 1 7 1 15zM1 17h15v2H1z"/></svg>
+      </div>
       <span id="catText">อาหาร</span>
     </div>
     <i class="fa-solid fa-chevron-down"></i>
@@ -78,25 +75,25 @@
 
     <div class="field">
       <label>หมายเหตุ</label>
-      <input type="text" class="input" placeholder="เช่น ข้าวเช้า, ค่าแท็กซี่" />
+      <input type="text" class="input" id="transactionNote" placeholder="เช่น ข้าวเช้า, ค่าแท็กซี่" />
     </div>
 
     <div class="field">
       <label>จำนวน</label>
       <small>จำนวนเงิน</small>
       <div class="amount-box">
-        <input type="number" class="input" placeholder="0.00" />
-        <span class="unit">THB</span>
-      </div>
+      <input type="number" class="input" id="transactionAmount" placeholder="0.00" />
+      <span class="unit">THB</span>
     </div>
+</div>
   </main>
 
-  <button class="save-btn">บันทึก</button>
+<input type="hidden" id="transactionType" value="expense" />
+<button class="save-btn" id="saveTransactionBtn">บันทึก</button>
 
-  <!-- Navbar -->
   <nav class="navbar">
     <div class="bottom-nav">
-  <a href="hah.html" class="nav-icon active-icon">
+  <a href="hello.html" class="nav-icon active-icon">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m3 9l9-7l9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M9 22V12h6v10"/></g></svg>
   </a>
 
@@ -109,13 +106,12 @@
   </a>
 
   <a href="Profile.html" class="nav-icon">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M4 18q-.425 0-.712-.288T3 17t.288-.712T4 16h16q.425 0 .713.288T21 17t-.288.713T20 18zm0-5q-.425 0-.712-.288T3 12t.288-.712T4 11h16q.425 0 .713.288T21 12t-.288.713T20 13zm0-5q-.425 0-.712-.288T3 7t.288-.712T4 6h16q.425 0 .713.288T21 7t-.288.713T20 8z"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M4 18q-.425 0-.712-.288T3 17t.288-.712T4 16h16q.425 0 .713.288T21 17t-.288.713T20 18zM4 13q-.425 0-.712-.288T3 12t.288-.712T4 11h16q.425 0 .713.288T21 12t-.288.713T20 13zM4 8q-.425 0-.712-.288T3 7t.288-.712T4 6h16q.425 0 .713.288T21 7t-.288.713T20 8z"/></svg>
   </a>
 </div>
   </nav>
 
- <!-- Popup: หมวดหมู่ -->
-<div class="overlay" id="catModal">
+ <div class="overlay" id="catModal">
   <div class="modal">
     <div class="modal-header">
       <div class="left">
@@ -130,33 +126,157 @@
       <div class="tab" id="tabIncome">รายรับ</div>
     </div>
 
-    <!-- รายจ่าย -->
     <div class="grid" id="expenseGrid">
-      <div class="item active" data-icon="fa-burger" data-text="อาหาร"><i class="mdi--food"></i><span>อาหาร</span></div>
-      <div class="item" data-icon="fa-car" data-text="เดินทาง"><i class="tabler--car-filled"></i><span>เดินทาง</span></div>
-      <div class="item" data-icon="fa-user-tie" data-text="บริการ"><i class="hugeicons--waiter"></i><span>บริการ</span></div>
-      <div class="item" data-icon="fa-headphones" data-text="บันเทิง"><i class="tdesign--service-filled"></i><span>บันเทิง</span></div>
-      <div class="item" data-icon="fa-kit-medical" data-text="ค่ารักษา"><i class="material-symbols--local-hospital-outline"></i><span>ค่ารักษา</span></div>
-      <div class="item" data-icon="fa-cart-shopping" data-text="ของใช้"><i class="mdi--trolley"></i><span>ของใช้</span></div>
-      <div class="item" data-icon="fa-cat" data-text="สัตว์เลี้ยง"><i class="fa7-solid--cat"></i><span>สัตว์เลี้ยง</span></div>
-      <div class="item" data-icon="fa-sack-dollar" data-text="ภาษี"><i class="heroicons-outline--receipt-tax"></i><span>ภาษี</span></div>
-      <div class="item" data-icon="fa-book" data-text="การศึกษา"><i class="famicons--book"></i><span>การศึกษา</span></div>
-      <div class="item" data-icon="fa-tap" data-text="สารธารณูปโภค"><i class="mdi--tap"></i><span>สารธารณูปโภค</span></div>
-      <div class="item" data-icon="fa-people-group" data-text="ครอบครัว"><i class="material-symbols--family-restroom-rounded"></i><span>ครอบครัว</span></div>
-      <div class="item" data-icon="fa-house" data-text="ที่พัก"><i class="solar--home-bold"></i><span>ที่พัก</span></div>
-      <div class="item" data-icon="fa-hand-holding-heart" data-text="บริจาค"><i class="ph--hand-heart-fill"></i><span>บริจาค</span></div>
-      <div class="item" data-icon="fa-shield-heart" data-text="ประกันภัย"><i class="mingcute--shield-fill"></i><span>ประกันภัย</span></div>
-      <div class="item" data-icon="fa-note" data-text="อื่นๆ"><i class="ph--note"></i><span>อื่นๆ</span></div>
+
+      <div class="item active" data-icon="mdi--food" data-text="อาหาร">
+        <div class="category-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M18.06 23h1.66c.84 0 1.53-.65 1.63-1.47L23 5.05h-5V1h-1.97v4.05h-4.97l.3 2.34c1.71.47 3.31 1.32 4.27 2.26c1.44 1.42 2.43 2.89 2.43 5.29zM1 22v-1h15.03v1c0 .54-.45 1-1.03 1H2c-.55 0-1-.46-1-1m15.03-7C16.03 7 1 7 1 15zM1 17h15v2H1z"/></svg>
+        </div>
+        <span>อาหาร</span>
+      </div>
+
+      <div class="item" data-icon="tabler--car-filled" data-text="เดินทาง">
+        <div class="category-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M14 5a1 1 0 0 1 .694.28l.087.095L18.48 10H19a3 3 0 0 1 2.995 2.824L22 13v4a1 1 0 0 1-1 1h-1.171a3.001 3.001 0 0 1-5.658 0H9.829a3.001 3.001 0 0 1-5.658 0H3a1 1 0 0 1-1-1v-6l.007-.117l.008-.056l.017-.078l.012-.036l.014-.05l2.014-5.034A1 1 0 0 1 5 5zM7 16a1 1 0 1 0 0 2a1 1 0 0 0 0-2m10 0a1 1 0 1 0 0 2a1 1 0 0 0 0-2m-6-9H5.676l-1.2 3H11zm2.52 0H13v3h2.92z"/></svg>
+        </div>
+        <span>เดินทาง</span>
+      </div>
+
+      <div class="item" data-icon="hugeicons--waiter" data-text="บริการ">
+        <div class="category-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"><path d="M20 22.002v-5.974c0-.95 0-1.424-.158-1.798a2 2 0 0 0-1.046-1.055c-.373-.161-.847-.165-1.796-.173c0 5-5 7-5 7s-5-2-5-7c-.932 0-1.398 0-1.765.152a2 2 0 0 0-1.083 1.082C4 14.604 4 15.07 4 16.002v6"/><path d="m12 13.5l2-1v2zm0 0l-2-1v2zm3.5-7v-1a3.5 3.5 0 0 0-7 0v1a3.5 3.5 0 1 0 7 0"/></g></svg>
+        </div>
+        <span>บริการ</span>
+      </div>
+
+      <div class="item" data-icon="tdesign--service-filled" data-text="บันเทิง">
+        <div class="category-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M2 11C2 5.477 6.477 1 12 1s10 4.477 10 10v5.154C22 17.8 20.58 19 19 19h-3v-8h4a8 8 0 1 0-16 0h4v8H6.063A2 2 0 0 0 8 20.5h1.564c.316-.453.841-.75 1.436-.75h2a1.75 1.75 0 1 1 0 3.5h-2c-.595 0-1.12-.297-1.436-.75H8a4 4 0 0 1-3.986-3.66C2.874 18.463 2 17.446 2 16.155z"/></svg>
+        </div>
+        <span>บันเทิง</span>
+      </div>
+
+      <div class="item" data-icon="material-symbols--local-hospital-outline" data-text="ค่ารักษา">
+        <div class="category-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M18 14h-4v4h-4v-4H6v-4h4V6h4v4h4m2-8H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2m0 18H4V4h16z"/></svg>
+        </div>
+        <span>ค่ารักษา</span>
+      </div>
+
+      <div class="item" data-icon="mdi--trolley" data-text="ของใช้">
+        <div class="category-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M17 18c-1.11 0-2 .89-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2M1 2v2h2l3.6 7.59l-1.36 2.45c-.15.28-.24.61-.24.96a2 2 0 0 0 2 2h12v-2H7.42a.25.25 0 0 1-.25-.25q0-.075.03-.12L8.1 13h7.45c.75 0 1.41-.42 1.75-1.03l3.58-6.47c.07-.16.12-.33.12-.5a1 1 0 0 0-1-1H5.21l-.94-2M7 18c-1.11 0-2 .89-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2"/></svg>
+        </div>
+        <span>ของใช้</span>
+      </div>
+
+      <div class="item" data-icon="fa7-solid--cat" data-text="สัตว์เลี้ยง">
+        <div class="category-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="576" height="512" viewBox="0 0 576 512"><path fill="currentColor" d="M64 96c53 0 96 43 96 96v85.8c29.7-44.7 77.8-76.2 133.4-84c25.6 60 85.2 102.1 154.6 102.1c10.9 0 21.6-1.1 32-3.1V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V339.2L280 448h56c17.7 0 32 14.3 32 32s-14.3 32-32 32H192c-53 0-96-43-96-96V192c0-16.6-12.6-30.2-28.7-31.8l-6.6-.3C44.6 158.2 32 144.6 32 128c0-17.7 14.3-32 32-32M533.8 3.2C544.2-5.5 560 1.9 560 15.5V128c0 61.9-50.1 112-112 112s-112-50.1-112-112V15.5c0-13.6 15.8-21 26.2-12.3L416 48h64zM400 108a20 20 0 1 0 0 40a20 20 0 1 0 0-40m96 0a20 20 0 1 0 0 40a20 20 0 1 0 0-40"/></svg>
+        </div>
+        <span>สัตว์เลี้ยง</span>
+      </div>
+      
+      <div class="item" data-icon="heroicons-outline--receipt-tax" data-text="ภาษี">
+        <div class="category-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="currentColor" fill-rule="evenodd" d="M5 2a2 2 0 0 0-2 2v14l3.5-2l3.5 2l3.5-2l3.5 2V4a2 2 0 0 0-2-2zm2.5 3a1.5 1.5 0 1 0 0 3a1.5 1.5 0 0 0 0-3m6.207.293a1 1 0 0 0-1.414 0l-6 6a1 1 0 1 0 1.414 1.414l6-6a1 1 0 0 0 0-1.414M12.5 10a1.5 1.5 0 1 0 0 3a1.5 1.5 0 0 0 0-3" clip-rule="evenodd"/></svg>
+        </div>
+        <span>ภาษี</span>
+      </div>
+      
+      <div class="item" data-icon="famicons--book" data-text="การศึกษา">
+        <div class="category-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512"><path fill="currentColor" d="M202.24 74C166.11 56.75 115.61 48.3 48 48a31.36 31.36 0 0 0-17.92 5.33A32 32 0 0 0 16 79.9V366c0 19.34 13.76 33.93 32 33.93c71.07 0 142.36 6.64 185.06 47a4.11 4.11 0 0 0 6.94-3V106.82a15.9 15.9 0 0 0-5.46-12A143 143 0 0 0 202.24 74m279.68-20.7A31.33 31.33 0 0 0 464 48c-67.61.3-118.11 8.71-154.24 26a143.3 143.3 0 0 0-32.31 20.78a15.93 15.93 0 0 0-5.45 12v337.13a3.93 3.93 0 0 0 6.68 2.81c25.67-25.5 70.72-46.82 185.36-46.81a32 32 0 0 0 32-32v-288a32 32 0 0 0-14.12-26.61"/></svg>
+        </div>
+        <span>การศึกษา</span>
+      </div>
+
+      <div class="item" data-icon="mdi--tap" data-text="สารธารณูปโภค">
+        <div class="category-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19 14.5s2 2.17 2 3.5a2 2 0 0 1-2 2a2 2 0 0 1-2-2c0-1.33 2-3.5 2-3.5M5 18V9a2 2 0 0 1-2-2a2 2 0 0 1 2-2V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1h8a2 2 0 0 1 2 2v4a1 1 0 0 1 1 1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1a1 1 0 0 1 1-1V9h-6v9h1a2 2 0 0 1 2 2v2H2v-2a2 2 0 0 1 2-2z"/></svg>
+        </div>
+        <span>สารธารณูปโภค</span>
+      </div>
+
+      <div class="item" data-icon="material-symbols--family-restroom-rounded" data-text="ครอบครัว">
+        <div class="category-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M18 6q-.825 0-1.412-.587T16 4t.588-1.412T18 2t1.413.588T20 4t-.587 1.413T18 6m-1 15v-7q0-1-.513-1.8t-1.312-1.25l.875-2.575q.2-.625.738-1T18 7t1.213.375t.737 1l2.1 6.3q.175.5-.137.913T21.1 16H20v5q0 .425-.288.713T19 22h-1q-.425 0-.712-.288T17 21m-4.5-9.5q-.625 0-1.062-.437T11 10t.438-1.062T12.5 8.5t1.063.438T14 10t-.437 1.063t-1.063.437M5.5 6q-.825 0-1.412-.587T3.5 4t.588-1.412T5.5 2t1.413.588T7.5 4t-.587 1.413T5.5 6m-2 15v-6H3q-.425 0-.712-.288T2 14V9q0-.825.588-1.412T4 7h3q.825 0 1.413.588T9 9v5q0 .425-.288.713T8 15h-.5v6q0 .425-.288.713T6.5 22h-2q-.425 0-.712-.288T3.5 21m7.5 0v-3q-.425 0-.712-.288T10 17v-3q0-.625.438-1.062T11.5 12.5h2q.625 0 1.063.438T15 14v3q0 .425-.288.713T14 18v3q0 .425-.288.713T13 22h-1q-.425 0-.712-.288T11 21"/></svg>
+        </div>
+        <span>ครอบครัว</span>
+      </div>
+
+      <div class="item" data-icon="solar--home-bold" data-text="ที่พัก">
+        <div class="category-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><defs><path id="SVGEuPeJeiy" fill="currentColor" d="M10.75 9.5a1.25 1.25 0 1 1 2.5 0a1.25 1.25 0 0 1-2.5 0"/></defs><path fill="currentColor" d="M18.5 3H16a.5.5 0 0 0-.5.5v.059l3.5 2.8V3.5a.5.5 0 0 0-.5-.5"/><use href="#SVGEuPeJeiy" fill-rule="evenodd" clip-rule="evenodd"/><path fill="currentColor" fill-rule="evenodd" d="m20.75 10.96l.782.626a.75.75 0 0 0 .936-1.172l-8.125-6.5a3.75 3.75 0 0 0-4.686 0l-8.125 6.5a.75.75 0 0 0 .937 1.172l.781-.626v10.29H2a.75.75 0 0 0 0 1.5h20a.75.75 0 0 0 0-1.5h-1.25zM9.25 9.5a2.75 2.75 0 1 1 5.5 0a2.75 2.75 0 0 1-5.5 0m2.8 3.75c.664 0 1.237 0 1.696.062c.492.066.963.215 1.345.597s.531.853.597 1.345c.058.43.062.96.062 1.573v4.423h-1.5V17c0-.728-.002-1.2-.048-1.546c-.044-.325-.114-.427-.172-.484s-.159-.128-.484-.172c-.347-.046-.818-.048-1.546-.048s-1.2.002-1.546.048c-.325.044-.427.115-.484.172s-.128.159-.172.484c-.046.347-.048.818-.048 1.546v4.25h-1.5v-4.3c0-.664 0-1.237.062-1.696c.066-.492.215-.963.597-1.345s.854-.531 1.345-.597c.459-.062 1.032-.062 1.697-.062z" clip-rule="evenodd"/><use href="#SVGEuPeJeiy" fill-rule="evenodd" clip-rule="evenodd"/></svg>
+        </div>
+        <span>ที่พัก</span>
+      </div>
+
+      <div class="item" data-icon="ph--hand-heart-fill" data-text="บริจาค">
+        <div class="category-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256"><path fill="currentColor" d="M230.33 141.06a24.34 24.34 0 0 0-18.61-4.77C230.5 117.33 240 98.48 240 80c0-26.47-21.29-48-47.46-48A47.58 47.58 0 0 0 156 48.75A47.58 47.58 0 0 0 119.46 32C93.29 32 72 53.53 72 80c0 11 3.24 21.69 10.06 33a31.87 31.87 0 0 0-14.75 8.4L44.69 144H16a16 16 0 0 0-16 16v40a16 16 0 0 0 16 16h104a8 8 0 0 0 1.94-.24l64-16a7 7 0 0 0 1.19-.4L226 182.82l.44-.2a24.6 24.6 0 0 0 3.93-41.56Zm-10.9 27.15l-38 16.18L119 200H56v-44.69l22.63-22.62A15.86 15.86 0 0 1 89.94 128H140a12 12 0 0 1 0 24h-28a8 8 0 0 0 0 16h32a8.3 8.3 0 0 0 1.79-.2l67-15.41l.31-.08a8.6 8.6 0 0 1 6.3 15.9Z"/></svg>
+        </div>
+        <span>บริจาค</span>
+      </div>
+
+      <div class="item" data-icon="mingcute--shield-fill" data-text="ประกันภัย">
+        <div class="category-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none"><path d="m12.702 2.195l7 2.625A2 2 0 0 1 21 6.693v5.363a9 9 0 0 1-4.975 8.05l-3.354 1.676a1.5 1.5 0 0 1-1.342 0l-3.354-1.677A9 9 0 0 1 3 12.055V6.694A2 2 0 0 1 4.298 4.82l7-2.625a2 2 0 0 1 1.404 0M12 8a1 1 0 0 0-.993.883L11 9v2H9a1 1 0 0 0-.117 1.993L9 13h2v2a1 1 0 0 0 1.993.117L13 15v-2h2a1 1 0 0 0 .117-1.993L15 11h-2V9a1 1 0 0 0-1-1"/></g></svg>
+        </div>
+        <span>ประกันภัย</span>
+      </div>
+
+      <div class="item" data-icon="ph--note" data-text="อื่นๆ">
+        <div class="category-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256"><g fill="currentColor"><path d="m216 160l-56 56v-56Z" opacity="0.2"/><path d="M88 96a8 8 0 0 1 8-8h64a8 8 0 0 1 0 16H96a8 8 0 0 1-8-8m8 40h64a8 8 0 0 0 0-16H96a8 8 0 0 0 0 16m32 16H96a8 8 0 0 0 0 16h32a8 8 0 0 0 0-16m96-104v108.69a15.86 15.86 0 0 1-4.69 11.31L168 219.31a15.86 15.86 0 0 1-11.31 4.69H48a16 16 0 0 1-16-16V48a16 16 0 0 1 16-16h160a16 16 0 0 1 16 16M48 208h104v-48a8 8 0 0 1 8-8h48V48H48Zm120-40v28.7l28.69-28.7Z"/></g></svg>
+        </div>
+        <span>อื่นๆ</span>
+      </div>
     </div>
 
-    <!-- รายรับ -->
     <div class="grid hidden" id="incomeGrid">
-      <div class="item" data-icon="fa-sack-dollar" data-text="รายได้"><i class="tdesign--money"></i><span>รายได้</span></div>
-      <div class="item" data-icon="fa-diamond" data-text="ได้พิเศษ"><i class="clarity--coin-bag-solid"></i><span>ได้พิเศษ</span></div>
-      <div class="item" data-icon="fa-gift" data-text="ของขวัญ"><i class="bxs--gift"></i><span>ของขวัญ</span></div>
-      <div class="item" data-icon="fa-store" data-text="ธุรกิจ"><i class="material-symbols--store"></i><span>ธุรกิจ</span></div>
-      <div class="item" data-icon="fa-chart-line" data-text="ปันผล"><i class="la--coins"></i><span>ปันผล</span></div>
-      <div class="item" data-icon="fa-note" data-text="อื่นๆ"><i class="ph--note"></i><span>อื่นๆ</span></div>
+
+      <div class="item" data-icon="tdesign--money" data-text="รายได้">
+        <div class="category-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><defs><path id="SVGgvnbobcx" d="M21.5 11v10h-19V11z"/></defs><g fill="none"><use href="#SVGgvnbobcx"/><path d="M12 13.5a2.5 2.5 0 1 1 0 5a2.5 2.5 0 0 1 0-5m5.136-7.209L19 5.67l1.824 5.333H3.002L3 11.004L14.146 2.1z"/><path stroke="currentColor" stroke-linecap="square" stroke-width="2" d="M21 11.003h-.176L19.001 5.67L3.354 11.003L3 11m-.5.004H3L14.146 2.1l2.817 3.95"/><g stroke="currentColor" stroke-linecap="square" stroke-width="2"><path d="M14.5 16a2.5 2.5 0 1 1-5 0a2.5 2.5 0 0 1 5 0Z"/><use href="#SVGgvnbobcx"/><path d="M2.5 11h2a2 2 0 0 1-2 2zm19 0h-2a2 2 0 0 0 2 2zm-19 10h2.002A2 2 0 0 0 2.5 18.998zm19 0h-2a2 2 0 0 1 2-2z"/></g></g></svg>
+        </div>
+        <span>รายได้</span>
+      </div>
+
+      <div class="item" data-icon="clarity--coin-bag-solid" data-text="ได้พิเศษ">
+        <div class="category-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36"><path fill="currentColor" d="M24.89 26h7.86c-.66-8.71-4.41-14.12-9.22-17.32l2.19-4.78a1 1 0 0 0-.91-1.4H11.1a1 1 0 0 0-.91 1.4l1.2 2.6h10.12l-.9 2h-1.85A25 25 0 0 1 20 13.19a25 25 0 0 1 .32 3l-1.58 1.11a22.5 22.5 0 0 0-.32-3.86A21.7 21.7 0 0 0 17 8.5h-1a28 28 0 0 0-2.48 3.7a24 24 0 0 0-1.49 3.46l-1.37-.91a23 23 0 0 1 1.47-3.34a31 31 0 0 1 1.92-2.91H12.3l.08.17c-5.3 3.53-9.33 9.73-9.33 20.08a1.65 1.65 0 0 0 1.56 1.75h8a2.67 2.67 0 0 1 1.6-4.5a2.67 2.67 0 0 1-.37-1.34a2.7 2.7 0 0 1 2.7-2.7h6a2.7 2.7 0 0 1 2.7 2.7a2.63 2.63 0 0 1-.35 1.34" class="clr-i-solid clr-i-solid-path-1"/><path fill="currentColor" d="M21.6 28.5a1 1 0 0 0-1-1h-6a1 1 0 0 0 0 2h6a1 1 0 0 0 1-1" class="clr-i-solid clr-i-solid-path-2"/><path fill="currentColor" d="M22.54 23.5h-6a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2" class="clr-i-solid clr-i-solid-path-3"/><path fill="currentColor" d="M22 31.5h-6a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2" class="clr-i-solid clr-i-solid-path-4"/><path fill="currentColor" d="M32.7 31.5h-7a1 1 0 0 0 0 2h7a1 1 0 0 0 0-2" class="clr-i-solid clr-i-solid-path-5"/><path fill="currentColor" d="M33.7 27.5h-7a1 1 0 0 0 0 2h7a1 1 0 0 0 0-2" class="clr-i-solid clr-i-solid-path-6"/><path fill="none" d="M0 0h36v36H0z"/></svg>
+        </div>
+        <span>ได้พิเศษ</span>
+      </div>
+
+      <div class="item" data-icon="bxs--gift" data-text="ของขวัญ">
+        <div class="category-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M5 12H4v8a2 2 0 0 0 2 2h5V12zm13 0h-5v10h5a2 2 0 0 0 2-2v-8zm.791-5A5 5 0 0 0 19 5.5C19 3.57 17.43 2 15.5 2c-1.622 0-2.705 1.482-3.404 3.085C11.407 3.57 10.269 2 8.5 2C6.57 2 5 3.57 5 5.5c0 .596.079 1.089.209 1.5H2v4h9V9h2v2h9V7zM7 5.5C7 4.673 7.673 4 8.5 4c.888 0 1.714 1.525 2.198 3H8c-.374 0-1 0-1-1.5M15.5 4c.827 0 1.5.673 1.5 1.5C17 7 16.374 7 16 7h-2.477c.51-1.576 1.251-3 1.977-3"/></svg>
+        </div>
+        <span>ของขวัญ</span>
+      </div>
+      
+      <div class="item" data-icon="material-symbols--store" data-text="ธุรกิจ">
+        <div class="category-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 18H6v-4h6m9 0v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6m0-10H4v2h16z"/></svg>
+        </div>
+        <span>ธุรกิจ</span>
+      </div>
+
+      <div class="item" data-icon="la--coins" data-text="ปันผล">
+        <div class="category-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path fill="currentColor" fill-rule="evenodd" d="M11.5 14c2.49 0 4.5-1 4.5-2.5V2c0-1-2-2-4.5-2S7 1 7 2v3.5c1.17.49 2.17 1.31 2.88 2.35c.49.096 1.03.149 1.62.149c1.31 0 2.4-.261 3.18-.686a4 4 0 0 0 .323-.198v1.38c0 .235-.187.6-.802.936c-.596.325-1.51.564-2.7.564q-.357 0-.68-.027q.12.493.16 1.01q.253.014.52.014c1.31 0 2.4-.c261 3.18-.686a4 4 0 0 0 .323-.198v1.38c0 .236-.149.586-.791.932c-.632.34-1.58.568-2.71.568q-.345 0-.668-.028a6.4 6.4 0 0 1-.309.974q.472.053.976.053zm2.7-7.56c.615-.336.802-.701.802-.936v-1.38q-.155.106-.323.198c-.778.425-1.87.686-3.18.686s-2.4-.261-3.18-.686a4 4 0 0 1-.323-.198v1.38c0 .235.187.6.802.935c.596.325 1.51.564 2.7.564s2.1-.239 2.7-.564C8.187 3.1 8 2.734 8 2.5" clip-rule="evenodd"/><path fill="currentColor" fill-rule="evenodd" d="M9 11.5C9 13.99 6.99 16 4.5 16S0 13.99 0 11.5S2.01 7 4.5 7S9 9.01 9 11.5m-1 0C8 13.43 6.43 15 4.5 15S1 13.43 1 11.5S2.57 8 4.5 8S8 9.57 8 11.5" clip-rule="evenodd"/></svg>
+        </div>
+        <span>ปันผล</span>
+      </div>
+
+      <div class="item" data-icon="ph--note" data-text="อื่นๆ">
+        <div class="category-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256"><g fill="currentColor"><path d="m216 160l-56 56v-56Z" opacity="0.2"/><path d="M88 96a8 8 0 0 1 8-8h64a8 8 0 0 1 0 16H96a8 8 0 0 1-8-8m8 40h64a8 8 0 0 0 0-16H96a8 8 0 0 0 0 16m32 16H96a8 8 0 0 0 0 16h32a8 8 0 0 0 0-16m96-104v108.69a15.86 15.86 0 0 1-4.69 11.31L168 219.31a15.86 15.86 0 0 1-11.31 4.69H48a16 16 0 0 1-16-16V48a16 16 0 0 1 16-16h160a16 16 0 0 1 16 16M48 208h104v-48a8 8 0 0 1 8-8h48V48H48Zm120-40v28.7l28.69-28.7Z"/></g></svg>
+        </div>
+        <span>อื่นๆ</span>
+      </div>
     </div>
 
     <button class="confirm-btn" id="confirmCat">ยืนยัน</button>
@@ -165,6 +285,178 @@
 
   
 
-  <script src="record.js"></script>
+<script src="record.js"></script>
 </body>
-</html>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Constants
+        const TRANSACTIONS_KEY = 'transactions';
+        const CURRENT_ACCOUNT_ID_KEY = 'currentAccountId';
+
+        // 1. รับองค์ประกอบ
+        const saveBtn = document.getElementById('saveTransactionBtn');
+        const dateDisplay = document.getElementById('dateDisplay');
+        const catText = document.getElementById('catText');
+        const catIconContainer = document.getElementById('catIcon'); 
+        const transactionNote = document.getElementById('transactionNote');
+        const transactionAmount = document.getElementById('transactionAmount');
+        const transactionTypeInput = document.getElementById('transactionType'); 
+        
+        // องค์ประกอบสำหรับ Grid และปุ่มประเภท
+        const tabExpense = document.getElementById('tabExpense'); 
+        const tabIncome = document.getElementById('tabIncome'); 
+        const expenseGrid = document.getElementById('expenseGrid');
+        const incomeGrid = document.getElementById('incomeGrid');
+        const categoryItems = document.querySelectorAll('.grid .item');
+        const confirmCat = document.getElementById('confirmCat');
+        const catModal = document.getElementById("catModal");
+        
+        // ตัวแปรสำหรับเก็บ item ที่ถูกเลือกชั่วคราว
+        let selectedCategoryItem = document.querySelector('.grid.active .item.active') || document.querySelector('#expenseGrid .item'); 
+        
+        // *******************************************************************
+        // NEW: ตั้งค่าไอคอนเริ่มต้นเมื่อโหลดหน้า
+        // คัดลอก SVG ของ 'อาหาร' ไปใส่ใน catIconContainer ทันที
+        const initialExpenseIcon = document.querySelector('#expenseGrid .item.active .category-icon')?.innerHTML;
+        if (catIconContainer && initialExpenseIcon) {
+            catIconContainer.innerHTML = initialExpenseIcon;
+        }
+        // *******************************************************************
+
+        if (!saveBtn) return; 
+
+        // *** A. LOGIC สำหรับสลับประเภทและหมวดหมู่ ***
+
+        function setTransactionType(type) {
+            if (transactionTypeInput) {
+                transactionTypeInput.value = type; 
+            }
+            
+            if (tabIncome) tabIncome.classList.remove('active');
+            if (tabExpense) tabExpense.classList.remove('active');
+
+            if (type === 'expense') {
+                if (tabExpense) tabExpense.classList.add('active');
+                if (expenseGrid) expenseGrid.classList.remove('hidden');
+                if (incomeGrid) incomeGrid.classList.add('hidden');
+            } else {
+                if (tabIncome) tabIncome.classList.add('active');
+                if (expenseGrid) expenseGrid.classList.add('hidden');
+                if (incomeGrid) incomeGrid.classList.remove('hidden');
+            }
+            
+            // เมื่อเปลี่ยน Tab ให้ตั้งค่า selectedCategoryItem ไปยัง Active Item ใน Grid นั้น (ถ้ามี)
+            // หรือตั้งค่าเริ่มต้นให้กับ Tab นั้น
+            if (type === 'expense') {
+                 selectedCategoryItem = expenseGrid.querySelector('.item.active') || expenseGrid.querySelector('.item');
+            } else {
+                 selectedCategoryItem = incomeGrid.querySelector('.item.active') || incomeGrid.querySelector('.item');
+            }
+        }
+        
+        // Event Listener สำหรับ Tabs
+        if (tabExpense) {
+            tabExpense.addEventListener('click', () => setTransactionType('expense'));
+        }
+        if (tabIncome) {
+            tabIncome.addEventListener('click', () => setTransactionType('income'));
+        }
+
+        // 3. การแก้ไขหลัก: Event Listener สำหรับการเลือกหมวดหมู่ (แก้ไข)
+        categoryItems.forEach(item => {
+            item.addEventListener('click', function() {
+                // ลบ active ออกจากทุกรายการใน Grid เดียวกันก่อน
+                this.closest('.grid').querySelectorAll('.item').forEach(i => i.classList.remove('active'));
+                
+                // ตั้งค่า active ให้กับรายการที่ถูกคลิก
+                this.classList.add('active');
+                selectedCategoryItem = this; // เก็บ item ที่ถูกเลือกชั่วคราว
+
+                // ตรวจสอบและตั้งค่าประเภทของธุรกรรมที่ถูกต้องทันที
+                const parentGrid = this.closest('.grid');
+                if (parentGrid.id === 'incomeGrid') {
+                    setTransactionType('income');
+                } else if (parentGrid.id === 'expenseGrid') {
+                    setTransactionType('expense');
+                }
+            });
+        });
+        
+        // Logic เมื่อกดปุ่ม "ยืนยัน" ใน Modal หมวดหมู่ (แก้ไข)
+        if (confirmCat) {
+            confirmCat.addEventListener('click', () => {
+                if (selectedCategoryItem) {
+                    const categoryName = selectedCategoryItem.dataset.text;
+                    
+                    // 1. อัพเดตชื่อหมวดหมู่ที่แสดง
+                    catText.textContent = categoryName;
+                    
+                    // 2. คัดลอกโค้ด SVG ที่ถูกเลือกไปที่ catIconContainer หลัก
+                    const clickedIconContent = selectedCategoryItem.querySelector('.category-icon').innerHTML;
+                    if (catIconContainer && clickedIconContent) {
+                        catIconContainer.innerHTML = clickedIconContent;
+                    }
+
+                    // 3. ตั้งค่าประเภทธุรกรรมให้ถูกต้อง (เผื่อกดเลือกหมวดหมู่แล้วยันยันเลย)
+                    const parentGrid = selectedCategoryItem.closest('.grid');
+                    if (parentGrid.id === 'incomeGrid') {
+                        setTransactionType('income');
+                    } else if (parentGrid.id === 'expenseGrid') {
+                        setTransactionType('expense');
+                    }
+                }
+                if (catModal) catModal.classList.remove('show');
+            });
+        }
+        
+        // ตั้งค่าเริ่มต้นเมื่อโหลดหน้า
+        setTransactionType('expense');
+
+
+        // *** B. LOGIC สำหรับการบันทึกรายการ (ไม่เปลี่ยนแปลง) ***
+
+        saveBtn.addEventListener('click', function() {
+            const currentAccountId = localStorage.getItem(CURRENT_ACCOUNT_ID_KEY) || 1; 
+            const dateText = dateDisplay ? dateDisplay.textContent.trim() : new Date().toLocaleDateString('th-TH');
+            const category = catText ? catText.textContent.trim() : 'ไม่ระบุหมวดหมู่';
+            const note = transactionNote ? transactionNote.value.trim() || category : category;
+            
+            let amount = transactionAmount ? parseFloat(transactionAmount.value) : NaN;
+            const type = transactionTypeInput ? transactionTypeInput.value.toLowerCase().trim() : 'expense'; 
+            
+            // 💡 ดึงโค้ด SVG ที่ถูกเลือกจาก catIconContainer
+            const categoryIconHtml = catIconContainer ? catIconContainer.innerHTML : ''; 
+
+            // การตรวจสอบข้อมูล
+            if (isNaN(amount) || amount <= 0) {
+                alert('กรุณาใส่จำนวนเงินที่ถูกต้อง');
+                return;
+            }
+            if (category === 'เลือกหมวดหมู่' || category === 'ไม่ระบุหมวดหมู่' || !categoryIconHtml.trim()) {
+                 alert('กรุณาเลือกหมวดหมู่และไอคอนที่ถูกต้อง');
+                 return;
+            }
+            
+            // 3. สร้างรายการธุรกรรมใหม่
+            const newTransaction = {
+                id: Date.now(),
+                date: dateText,
+                category: category,
+                note: note,
+                amount: amount,
+                type: type, 
+                accountId: parseInt(currentAccountId),
+                iconHtml: categoryIconHtml // <--- เก็บโค้ด SVG ไว้ใน localStorage
+            };
+
+            // 4. บันทึก
+            const existingTransactionsJSON = localStorage.getItem(TRANSACTIONS_KEY);
+            let transactions = existingTransactionsJSON ? JSON.parse(existingTransactionsJSON) : [];
+            transactions.push(newTransaction);
+            localStorage.setItem(TRANSACTIONS_KEY, JSON.stringify(transactions));
+
+            // 5. เปลี่ยนเส้นทางไปที่ List.html
+            window.location.href = 'List.html';
+        });
+    });
+</script>

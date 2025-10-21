@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Budget App UI</title>
+  <title>Coinders app</title>
   
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&display=swap" rel="stylesheet">
 
@@ -84,7 +84,6 @@
 
     .header-title {
       font-size: 18px;
-      font-weight: bold;
       margin-bottom: 4px; 
     }
 
@@ -175,7 +174,6 @@
     }
 
     .account-name {
-      font-weight: bold;
       font-size: 18px; 
       color: var(--text-primary); 
     }
@@ -243,7 +241,6 @@
 
     .info-row .amount {
       font-size: 20px;
-      font-weight: bold;
       color: var(--text-primary); 
     }
     .info-row .amount .currency {
@@ -290,7 +287,6 @@
     .budget-title {
       grid-column: 1 / 2;
       grid-row: 1 / 2;
-      font-weight: bold;
       color: var(--text-brownish);
       font-size: 16px;
     }
@@ -298,7 +294,6 @@
     .budget-amount {
       grid-column: 1 / 2;
       grid-row: 2 / 3;
-      font-weight: bold;
       color: var(--text-brownish);
       font-size: 16px;
     }
@@ -338,30 +333,46 @@
       background-color: var(--app-blue);
       color: white;
       border: none;
-      border-radius: 20px;
+      border-radius: 14px;
       padding: 12px 24px;
       font-size: 16px;
       font-family: 'Kanit', sans-serif;
       cursor: pointer;
     }
 
-    /* --- 4. เมนูด้านล่าง --- */
+    /* --- 4. เมนูด้านล่าง (ปรับให้เป็น nav-icon เหมือนไฟล์อื่น) --- */
     .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #67C090; 
       display: flex;
       justify-content: space-around;
+      padding: 10px 0;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.1); 
+      z-index: 1000;
+    }
+
+    .nav-icon { /* ใช้คลาสนี้แทน homeicon */
+      display: flex;
+      flex-direction: column;
       align-items: center;
-      background-color: var(--app-green); 
-      padding: 8px 0;
-    }
-
-    .homeicon {
-      color: rgba(255, 255, 255, 1); 
+      padding: 8px; /* ปรับให้เท่ากับไฟล์ List */
       cursor: pointer;
-      padding: 6px;
+      color: #FFFFFF; /* สีไอคอนปกติเป็นสีขาว */
+      transition: color 0.3s;
+      text-decoration: none; 
     }
 
-    .homeicon.active-icon {
-      color: white; 
+    .nav-icon svg, .nav-icon i { 
+      display: block;
+      width: 24px;
+      height: 24px;
+    }
+
+    .active-icon {
+      color: #124170; /* สีไอคอนเมื่อ Active */
     }
 
     /* --- 5. Modal Styles --- */
@@ -406,12 +417,10 @@
       margin: 0;
       font-size: 20px;
       color: var(--text-primary);
-      font-weight: bold;
     }
 
     .close-button {
       font-size: 28px;
-      font-weight: bold;
       color: #aaa;
       cursor: pointer;
       line-height: 1;
@@ -442,125 +451,15 @@
       background-color: var(--app-blue);
       color: white;
       border-color: var(--app-blue);
-      font-weight: bold;
     }
     
-    .account-item-details {
-      display: flex;
-      align-items: center;
-      flex-grow: 1;
-    }
-    
-    .account-item-actions {
-      display: flex;
-      align-items: center;
-    }
-
     .account-item.create-new {
       color: var(--app-blue);
       justify-content: center;
-      font-weight: bold;
-    }
 
-    .account-item:hover:not(.selected) {
-        background-color: #f5f5f5;
-        border-color: #ccc;
     }
     
-    .account-item .account-item-name {
-      flex-grow: 1;
-    }
-
-    .checkmark-icon {
-      width: 24px;
-      height: 24px;
-      fill: white;
-      display: none; /* Hide by default */
-    }
-    
-    .account-item.selected .checkmark-icon {
-        display: block; /* Show only when selected */
-    }
-
-    .edit-icon, .delete-icon {
-      width: 20px;
-      height: 20px;
-      margin-left: 12px;
-      opacity: 0.7;
-      cursor: pointer;
-    }
-
-    .delete-icon {
-       fill: var(--app-red-light);
-    }
-    
-    .account-item.selected .edit-icon path {
-      fill: white;
-    }
-    .account-item.selected .delete-icon path {
-       fill: white;
-    }
-
-    /* --- 6. Confirmation & Edit Modal Styles --- */
-    .confirm-modal-content, .edit-modal-content {
-      padding: 32px;
-      text-align: center;
-      max-width: 350px;
-    }
-    
-    .edit-modal-content h2 {
-       margin-top: 0;
-       margin-bottom: 20px;
-    }
-
-    .confirm-text {
-      font-size: 18px;
-      color: var(--text-primary);
-      margin: 0 0 24px 0;
-    }
-
-    .confirm-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-    }
-
-    .btn {
-      border: none;
-      border-radius: 20px;
-      padding: 10px 24px;
-      font-size: 16px;
-      font-family: 'Kanit', sans-serif;
-      cursor: pointer;
-      font-weight: bold;
-      min-width: 100px;
-    }
-
-    .btn-cancel {
-      background-color: #aaa;
-      color: white;
-    }
-    
-    .btn-delete {
-       background-color: var(--app-red-light);
-       color: white;
-    }
-
-    .btn-confirm {
-      background-color: var(--app-green);
-      color: white;
-    }
-    
-    #editAccountNameInput {
-      width: 100%;
-      padding: 10px;
-      font-size: 16px;
-      border: 1px solid var(--border-grey);
-      border-radius: 8px;
-      margin-bottom: 20px;
-      box-sizing: border-box; /* Important */
-    }
-
+    /* ... (ส่วน Modal Styles อื่น ๆ ไม่เปลี่ยนแปลง) ... */
 
     /* =================================================
       [ส่วนโค้ดสำหรับ Responsive]
@@ -603,7 +502,6 @@
     </div>
 
     <header class="app-header">
-      - 
       <div class="header-spacer"></div>
 
       <div class="header-center">
@@ -673,28 +571,40 @@
         </div>
       </section>
 
+      <a href="record.html">
       <div class="add-button-container">
         <button class="add-button">+ เพิ่มรายการ</button>
       </div>
+      </a>
     </main>
 
     <nav class="bottom-nav">
-      <div class="homeicon">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m3 9l9-7l9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M9 22V12h6v10"/></g></svg>
-  </div>
-  <div class="homeicon active-icon">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M3 5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm6 0H5v4h4zm4 0a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2zm6 0h-4v4h4zM3 15a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm6 0H5v4h4zm4 0a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2zm6 0h-4v4h4z"/></svg>
-  </div>
-  <div class="homeicon">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M2.7 17.625q-.3-.3-.288-.712t.288-.688l5.275-5.35Q8.55 10.3 9.4 10.3t1.425.575l2.575 2.6l5.2-5.15H17q-.425 0-.712-.288T16 7.326t.288-.712t.712-.288h4q-.425 0 .713.288t.287.712v4q0 .425-.288-.713t-.712.287t-.712-.287t-.288-.713v-1.6L14.825 14.9q-.575.575-1.425.575t-1.425-.575L9.4 12.325l-5.3 5.3q-.275.275-.7.275t-.7-.275"/></svg>
-  </div>
-  <div class="homeicon">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M4 18q-.425 0-.712-.288T3 17t.288-.712T4 16h16q.425 0 .713.288T21 17t-.288.713T20 18zm0-5q-.425 0-.712-.288T3 12t.288-.712T4 11h16q-.425 0 .713.288T21 12t-.288.713T20 13zm0-5q-.425 0-.712-.288T3 7t.288-.712T4 6h16q.425 0 .713.288T21 7t-.288.713T20 8z"/></svg>
-  </div>
+      <a href="hello.html">
+        <div class="nav-icon active-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m3 9l9-7l9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M9 22V12h6v10"/></g></svg>
+        </div>
+      </a>
+
+      <a href="List.html">
+        <div class="nav-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M3 5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm6 0H5v4h4zm4 0a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2zm6 0h-4v4h4zM3 15a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm6 0H5v4h4zm4 0a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2zm6 0h-4v4h4z"/></svg>
+        </div>
+      </a>
+
+      <a href="graph.html">
+        <div class="nav-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M2.7 17.625q-.3-.3-.288-.712t.288-.688l5.275-5.35Q8.55 10.3 9.4 10.3t1.425.575l2.575 2.6l5.2-5.15H17q-.425 0-.712-.288T16 7.326t.288-.712t.712-.288h4q.425 0 .713.288t.287.712v4q0 .425-.288.713t-.712.287t-.712-.287t-.288-.713v-1.6L14.825 14.9q-.575.575-1.425.575t-1.425-.575L9.4 12.325l-5.3 5.3q-.275.275-.7.275t-.7-.275"/></svg>
+        </div>
+      </a>
+
+      <a href="Profile.html">
+        <div class="nav-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M4 18q-.425 0-.712-.288T3 17t.288-.712T4 16h16q.425 0 .713.288T21 17t-.288.713T20 18zM4 13q-.425 0-.712-.288T3 12t.288-.712T4 11h16q.425 0 .713.288T21 12t-.288.713T20 13zM4 8q-.425 0-.712-.288T3 7t.288-.712T4 6h16q.425 0 .713.288T21 7t-.288.713T20 8z"/></svg>
+        </div>
+      </a>
     </nav>
   </div>
 
-  <!-- Account Selector Modal -->
   <div id="accountModal" class="modal-overlay hidden">
     <div class="modal-content">
       <div class="modal-header">
@@ -702,7 +612,6 @@
         <span class="close-button">&times;</span>
       </div>
       <div class="modal-body" id="accountList">
-        <!-- Account items will be generated by JavaScript -->
         <div class="account-item create-new">
           + สร้างบัญชีใหม่
         </div>
@@ -710,7 +619,6 @@
     </div>
   </div>
 
-  <!-- Create Confirmation Modal -->
   <div id="confirmModal" class="modal-overlay hidden">
     <div class="modal-content confirm-modal-content">
       <div class="modal-body">
@@ -723,7 +631,6 @@
     </div>
   </div>
 
-  <!-- Edit Name Modal -->
   <div id="editModal" class="modal-overlay hidden">
     <div class="modal-content edit-modal-content">
       <h2>แก้ไขชื่อบัญชี</h2>
@@ -735,8 +642,7 @@
     </div>
   </div>
   
-    <!-- Delete Confirmation Modal -->
-  <div id="deleteConfirmModal" class="modal-overlay hidden">
+    <div id="deleteConfirmModal" class="modal-overlay hidden">
     <div class="modal-content confirm-modal-content">
       <div class="modal-body">
         <p class="confirm-text">คุณแน่ใจหรือไม่ว่าต้องการลบบัญชีนี้?</p>
@@ -747,253 +653,422 @@
       </div>
     </div>
   </div>
-
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-
-      // --- DATA ---
-      let accountsData = [
-        {
-          id: 1,
-          name: 'บัญชีของฉัน 1',
-          income: 2500,
-          expense: 298,
-          items: 5,
-          days: 2,
-          dailyBudget: 150,
-          dailyUsedPercent: 66,
-          monthlyBudget: 5000,
-          monthlyUsedPercent: 6,
-        }
-      ];
-      let currentAccountId = 1;
-      let accountToEditId = null;
-      let accountToDeleteId = null;
-
-      // --- ELEMENTS ---
-      const accountSelector = document.getElementById('accountSelector');
-      // Main UI elements
-      const mainAccountName = document.getElementById('mainAccountName');
-      const cardAccountName = document.getElementById('cardAccountName');
-      const tagItems = document.getElementById('tagItems');
-      const tagDays = document.getElementById('tagDays');
-      const incomeAmount = document.getElementById('incomeAmount');
-      const expenseAmount = document.getElementById('expenseAmount');
-      const totalAmount = document.getElementById('totalAmount');
-      const dailyProgressBar = document.getElementById('dailyProgressBar');
-      const dailyBudgetAmount = document.getElementById('dailyBudgetAmount');
-      const dailyBudgetStatus = document.getElementById('dailyBudgetStatus');
-      const monthlyProgressBar = document.getElementById('monthlyProgressBar');
-      const monthlyBudgetAmount = document.getElementById('monthlyBudgetAmount');
-      const monthlyBudgetStatus = document.getElementById('monthlyBudgetStatus');
-      
-      // Account Modal
-      const modal = document.getElementById('accountModal');
-      const closeButton = modal.querySelector('.close-button');
-      const createNewBtn = modal.querySelector('.create-new');
-      const accountList = document.getElementById('accountList');
-
-      // Create Confirm Modal
-      const confirmModal = document.getElementById('confirmModal');
-      const cancelCreateBtn = document.getElementById('cancelCreateBtn');
-      const confirmCreateBtn = document.getElementById('confirmCreateBtn');
-
-      // Edit Modal
-      const editModal = document.getElementById('editModal');
-      const cancelEditBtn = document.getElementById('cancelEditBtn');
-      const saveEditBtn = document.getElementById('saveEditBtn');
-      const editAccountNameInput = document.getElementById('editAccountNameInput');
-      
-      // Delete Confirm Modal
-      const deleteConfirmModal = document.getElementById('deleteConfirmModal');
-      const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
-      const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
-      
-
-      // --- GENERIC MODAL FUNCTIONS ---
-      function openModal(modalElement) {
-        modalElement.classList.remove('hidden');
-        modalElement.style.opacity = 1;
-        modalElement.style.visibility = 'visible';
-      }
-
-      function closeModal(modalElement) {
-        modalElement.style.opacity = 0;
-        modalElement.style.visibility = 'hidden';
-      }
-
-      // --- RENDER FUNCTIONS ---
-      function renderAccountData(accountId) {
-        const account = accountsData.find(acc => acc.id === accountId);
-        if (!account) return;
-        
-        const total = account.income - account.expense;
-        
-        mainAccountName.textContent = account.name;
-        cardAccountName.textContent = account.name;
-
-        tagItems.textContent = `${account.items} รายการ`;
-        tagDays.textContent = `${account.days} วัน`;
-        
-        incomeAmount.innerHTML = `${account.income.toLocaleString('th-TH')} <span class="currency">THB</span>`;
-        expenseAmount.innerHTML = `${account.expense.toLocaleString('th-TH')} <span class="currency">THB</span>`;
-        totalAmount.innerHTML = `${total.toLocaleString('th-TH')} <span class="currency">THB</span>`;
-
-        dailyProgressBar.style.width = `${account.dailyUsedPercent}%`;
-        dailyBudgetAmount.textContent = `${account.dailyBudget.toLocaleString('th-TH')} THB`;
-        dailyBudgetStatus.textContent = `ถูกใช้ไปแล้ว ${account.dailyUsedPercent} %`;
-        
-        monthlyProgressBar.style.width = `${account.monthlyUsedPercent}%`;
-        monthlyBudgetAmount.textContent = `${account.monthlyBudget.toLocaleString('th-TH')} THB`;
-        monthlyBudgetStatus.textContent = `ถูกใช้ไปแล้ว ${account.monthlyUsedPercent} %`;
-      }
-
-      function renderAccountList() {
-        // Clear existing accounts
-        const items = accountList.querySelectorAll('.account-item:not(.create-new)');
-        items.forEach(item => item.remove());
-
-        // Render each account
-        accountsData.forEach(account => {
-          const isSelected = account.id === currentAccountId;
-          const accountEl = document.createElement('div');
-          accountEl.classList.add('account-item');
-          if (isSelected) {
-            accountEl.classList.add('selected');
-          }
-          accountEl.dataset.id = account.id;
-          
-          // Icons are only for non-selected items for now to keep it clean
-          let actionsHTML = `
-            <svg class="edit-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zM20.71 7.04a.996.996 0 0 0 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83l3.75 3.75z"/></svg>
-          `;
-          // Add delete icon only if it's not the first account
-          if (account.id !== 1) {
-            actionsHTML += `<svg class="delete-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zM19 4h-3.5l-1-1h-5l-1 1H5v2h14z"/></svg>`;
-          }
-
-          accountEl.innerHTML = `
-            <div class="account-item-details">
-                <span class="account-item-name">${account.name}</span>
-                <svg class="checkmark-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="m9.55 18l-5.7-5.7l1.425-1.425L9.55 15.15l9.175-9.175L20.15 7.4z"/></svg>
-            </div>
-            <div class="account-item-actions">
-                ${actionsHTML}
-            </div>
-          `;
-          accountList.insertBefore(accountEl, createNewBtn);
-        });
-      }
-
-
-      // --- EVENT HANDLERS ---
-      
-      // Open Account List
-      accountSelector.addEventListener('click', () => {
-        renderAccountList();
-        openModal(modal);
-      });
-
-      // Handle clicks within the account list
-      accountList.addEventListener('click', (event) => {
-        const target = event.target;
-        const accountItem = target.closest('.account-item:not(.create-new)');
-        if (!accountItem) return;
-
-        const clickedAccountId = parseInt(accountItem.dataset.id);
-
-        if (target.closest('.edit-icon')) {
-          accountToEditId = clickedAccountId;
-          const account = accountsData.find(acc => acc.id === accountToEditId);
-          editAccountNameInput.value = account.name;
-          openModal(editModal);
-        } else if (target.closest('.delete-icon')) {
-          accountToDeleteId = clickedAccountId;
-          openModal(deleteConfirmModal);
-        } else {
-          // Select account
-          currentAccountId = clickedAccountId;
-          renderAccountData(currentAccountId);
-          closeModal(modal);
-        }
-      });
-      
-      // Create New Account Logic
-      confirmCreateBtn.addEventListener('click', () => {
-        const newId = Date.now();
-        const newAccount = {
-          id: newId,
-          name: `บัญชีของฉัน ${accountsData.length + 1}`,
-          income: Math.floor(Math.random() * 10000),
-          expense: Math.floor(Math.random() * 5000),
-          items: Math.floor(Math.random() * 20),
-          days: Math.floor(Math.random() * 10),
-          dailyBudget: Math.floor(Math.random() * 500) + 100,
-          dailyUsedPercent: Math.floor(Math.random() * 100),
-          monthlyBudget: Math.floor(Math.random() * 15000) + 5000,
-          monthlyUsedPercent: Math.floor(Math.random() * 100),
-        };
-        accountsData.push(newAccount);
-        currentAccountId = newId;
-        renderAccountData(currentAccountId);
-        closeModal(confirmModal);
-      });
-      
-      // Edit Name Logic
-      saveEditBtn.addEventListener('click', () => {
-        if (accountToEditId && editAccountNameInput.value.trim() !== '') {
-          const newName = editAccountNameInput.value.trim();
-          const account = accountsData.find(acc => acc.id === accountToEditId);
-          if (account) {
-            account.name = newName;
-          }
-          if (currentAccountId === accountToEditId) {
-            renderAccountData(currentAccountId);
-          }
-          closeModal(editModal);
-          accountToEditId = null;
-        }
-      });
-      
-      // Delete Account Logic
-      confirmDeleteBtn.addEventListener('click', () => {
-        if (accountToDeleteId) {
-            accountsData = accountsData.filter(acc => acc.id !== accountToDeleteId);
-            // If the deleted account was the current one, switch to the first account
-            if(currentAccountId === accountToDeleteId) {
-                currentAccountId = accountsData[0].id;
-                renderAccountData(currentAccountId);
-            }
-            closeModal(deleteConfirmModal);
-            renderAccountList(); // Re-render list inside the main modal
-            accountToDeleteId = null;
-        }
-      });
-
-      // --- MODAL CLOSE LISTENERS ---
-      closeButton.addEventListener('click', () => closeModal(modal));
-      modal.addEventListener('click', (e) => e.target === modal && closeModal(modal));
-      
-      createNewBtn.addEventListener('click', () => {
-        closeModal(modal);
-        setTimeout(() => openModal(confirmModal), 300);
-      });
-
-      cancelCreateBtn.addEventListener('click', () => closeModal(confirmModal));
-      confirmModal.addEventListener('click', (e) => e.target === confirmModal && closeModal(confirmModal));
-
-      cancelEditBtn.addEventListener('click', () => closeModal(editModal));
-      editModal.addEventListener('click', (e) => e.target === editModal && closeModal(editModal));
-
-      cancelDeleteBtn.addEventListener('click', () => closeModal(deleteConfirmModal));
-      deleteConfirmModal.addEventListener('click', (e) => e.target === deleteConfirmModal && closeModal(deleteConfirmModal));
-
-      // --- INITIAL RENDER ---
-      renderAccountData(currentAccountId);
-    });
-  </script>
-
 </body>
 </html>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- CONSTANTS & PERSISTENCE KEYS ---
+        const ACCOUNT_DATA_KEY = 'accountsData';
+        const CURRENT_ACCOUNT_ID_KEY = 'currentAccountId';
+        const TRANSACTIONS_KEY = 'transactions';
+        const initialAccounts = [
+            { id: 1, name: 'บัญชีหลัก', type: 'Savings', tag: 'Personal', balance: 0, tagText: 'บัญชีส่วนตัว', dailyBudget: 500, monthlyBudget: 15000 },
+            { id: 2, name: 'บัญชีเงินเดือน', type: 'Checking', tag: 'Salary', balance: 0, tagText: 'รายได้หลัก', dailyBudget: 500, monthlyBudget: 15000 }
+        ];
+
+        // --- ELEMENTS ---
+        const mainAccountName = document.getElementById('mainAccountName');
+        const cardAccountName = document.getElementById('cardAccountName');
+        const accountSelector = document.getElementById('accountSelector');
+        const accountListContainer = document.getElementById('accountList');
+        const modal = document.getElementById('accountModal');
+        const closeButton = modal.querySelector('.close-button');
+        
+        // Summary elements
+        const tagItems = document.getElementById('tagItems');
+        const tagDays = document.getElementById('tagDays');
+        const incomeAmount = document.getElementById('incomeAmount');
+        const expenseAmount = document.getElementById('expenseAmount');
+        const totalAmount = document.getElementById('totalAmount');
+        const dailyProgressBar = document.getElementById('dailyProgressBar');
+        const dailyBudgetAmount = document.getElementById('dailyBudgetAmount');
+        const dailyBudgetStatus = document.getElementById('dailyBudgetStatus');
+        const monthlyProgressBar = document.getElementById('monthlyProgressBar');
+        const monthlyBudgetAmount = document.getElementById('monthlyBudgetAmount');
+        const monthlyBudgetStatus = document.getElementById('monthlyBudgetStatus');
+        
+        // Modal Elements
+        const createNewBtn = document.querySelector('.create-new');
+        const confirmModal = document.getElementById('confirmModal');
+        const cancelCreateBtn = document.getElementById('cancelCreateBtn');
+        const confirmCreateBtn = document.getElementById('confirmCreateBtn');
+        const newAccountNameInput = document.getElementById('newAccountNameInput');
+        
+        const editModal = document.getElementById('editModal');
+        const cancelEditBtn = document.getElementById('cancelEditBtn');
+        const saveEditBtn = document.getElementById('saveEditBtn');
+        const editAccountNameInput = document.getElementById('editAccountNameInput');
+        
+        const deleteConfirmModal = document.getElementById('deleteConfirmModal');
+        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+        
+        let accountToDeleteId = null;
+        let accountToEditId = null;
+
+        // --- HELPER FUNCTIONS ---
+
+        function loadAccounts() {
+            const storedData = localStorage.getItem(ACCOUNT_DATA_KEY);
+            if (storedData) {
+                const accounts = JSON.parse(storedData);
+                if (accounts.length > 0) return accounts;
+            }
+            // ถ้าไม่มี ให้สร้างบัญชีเริ่มต้นและบันทึก
+            localStorage.setItem(ACCOUNT_DATA_KEY, JSON.stringify(initialAccounts));
+            return initialAccounts;
+        }
+
+        function saveAccounts(accounts) {
+            localStorage.setItem(ACCOUNT_DATA_KEY, JSON.stringify(accounts));
+        }
+
+        function getCurrentAccountId() {
+            const id = localStorage.getItem(CURRENT_ACCOUNT_ID_KEY);
+            // พยายามแปลงเป็นตัวเลข ถ้าแปลงไม่ได้ หรือไม่มีค่า ให้ใช้ ID ของบัญชีแรก
+            const accounts = loadAccounts();
+            return id ? parseInt(id) : (accounts.length > 0 ? accounts[0].id : 1); 
+        }
+        
+        function loadTransactions() {
+            const storedTransactions = localStorage.getItem(TRANSACTIONS_KEY);
+            return storedTransactions ? JSON.parse(storedTransactions) : [];
+        }
+
+        function formatCurrency(amount) {
+            return amount.toLocaleString('th-TH', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+        }
+        
+        function openModal(targetModal) {
+            targetModal.classList.remove('hidden');
+        }
+
+        function closeModal(targetModal) {
+            targetModal.classList.add('hidden');
+        }
+        
+        // --- MAIN RENDER FUNCTION ---
+
+        function renderAccountData(accountId) {
+            const accounts = loadAccounts();
+            const transactions = loadTransactions();
+            const currentAccount = accounts.find(acc => acc.id === accountId);
+            
+            if (!currentAccount) {
+                console.error(`Account with ID ${accountId} not found. Defaulting to first available account.`);
+                const defaultAccount = accounts[0] || initialAccounts[0];
+                accountId = defaultAccount.id;
+                // ถ้าบัญชีปัจจุบันหายไป ให้ตั้งค่าใหม่แล้วเรียกตัวเองซ้ำ
+                localStorage.setItem(CURRENT_ACCOUNT_ID_KEY, accountId);
+                renderAccountData(accountId);
+                return;
+            }
+
+            // 1. Filter & Calculate totals (โค้ดส่วนนี้คือส่วนที่แก้ไขเรื่องรายรับ/รายจ่าย)
+            const filteredTransactions = transactions.filter(t => parseInt(t.accountId) === accountId); 
+            
+            let incomeTotal = 0;
+            let expenseTotal = 0;
+            const transactionDates = new Set();
+            
+            filteredTransactions.forEach(t => {
+                const amount = parseFloat(t.amount); 
+                const transactionType = String(t.type).toLowerCase().trim(); // Ensure correct type comparison
+                
+                if (transactionType === 'income') {
+                    incomeTotal += amount; 
+                } else if (transactionType === 'expense') {
+                    expenseTotal += amount; 
+                }
+                
+                if (t.date) {
+                    transactionDates.add(t.date);
+                }
+            });
+            
+            const totalBalance = incomeTotal - expenseTotal;
+
+            // 2. UI Updates
+            
+            // Header & Card Name
+            mainAccountName.textContent = currentAccount.name;
+            cardAccountName.textContent = currentAccount.name;
+            
+            // Financial Summary
+            incomeAmount.innerHTML = `${formatCurrency(incomeTotal)} <span class="currency">THB</span>`;
+            expenseAmount.innerHTML = `${formatCurrency(expenseTotal)} <span class="currency">THB</span>`;
+            totalAmount.innerHTML = `${formatCurrency(totalBalance)} <span class="currency">THB</span>`;
+            
+            // Tags
+            tagItems.textContent = `${filteredTransactions.length} รายการ`;
+            
+            // Fix: Calculate unique days
+            const uniqueDates = new Set();
+            filteredTransactions.forEach(t => {
+                // Ensure date is valid before processing
+                if (t.date) {
+                    // Normalize the date string to YYYY-MM-DD to count unique days
+                    const datePart = new Date(t.date).toISOString().split('T')[0];
+                    uniqueDates.add(datePart);
+                }
+            });
+            tagDays.textContent = `${uniqueDates.size} วัน`;
+
+            // Budget Progress (ใช้ expenseTotal ในการคำนวณ)
+            const dailyBudget = currentAccount.dailyBudget || 500;
+            const monthlyBudget = currentAccount.monthlyBudget || 15000;
+            
+            const dailyUsedPercent = dailyBudget > 0 ? Math.round((expenseTotal / dailyBudget) * 100) : 0;
+            const monthlyUsedPercent = monthlyBudget > 0 ? Math.round((expenseTotal / monthlyBudget) * 100) : 0;
+
+            dailyProgressBar.style.width = `${Math.min(dailyUsedPercent, 100)}%`;
+            dailyBudgetAmount.textContent = `${formatCurrency(dailyBudget)} THB`;
+            dailyBudgetStatus.textContent = `ถูกใช้ไปแล้ว ${dailyUsedPercent} %`;
+            
+            monthlyProgressBar.style.width = `${Math.min(monthlyUsedPercent, 100)}%`;
+            monthlyBudgetAmount.textContent = `${formatCurrency(monthlyBudget)} THB`;
+            monthlyBudgetStatus.textContent = `ถูกใช้ไปแล้ว ${monthlyUsedPercent} %`;
+            
+            // 3. Save current account ID
+            localStorage.setItem(CURRENT_ACCOUNT_ID_KEY, accountId);
+            
+            // Re-render the modal list (เผื่อมีการแก้ไข/ลบในขณะเปิด Modal)
+            renderAccountModalList(accountId);
+        }
+        
+        // --- MODAL LIST RENDER ---
+        
+        function renderAccountModalList(currentAccountId) {
+            const accounts = loadAccounts();
+            
+            // Clear all list items except the "Create New" button
+            const createNewBtnElement = accountListContainer.querySelector('.create-new');
+            
+            accountListContainer.querySelectorAll('.account-item:not(.create-new)').forEach(item => item.remove());
+            
+            accounts.forEach(account => {
+                const item = document.createElement('div');
+                item.className = 'account-item';
+                item.dataset.accountId = account.id;
+                
+                if (account.id === currentAccountId) {
+                    item.classList.add('selected');
+                }
+                
+                const isDeletable = accounts.length > 1;
+
+                item.innerHTML = `
+                    <div class="account-item-details">
+                        <span class="account-item-name">${account.name}</span>
+                        ${account.id === currentAccountId ? `
+                            <svg class="checkmark-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="m10.6 16.6l-2.4-2.4l-1.4 1.4l3.8 3.8l7.6-7.6l-1.4-1.4z"/></svg>
+                        ` : ''}
+                    </div>
+                    <div class="account-item-actions">
+                        <svg class="edit-icon" data-id="${account.id}" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zM20.71 7.04a.996.996 0 0 0 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83l3.75 3.75z"/></svg>
+                        ${isDeletable ? `<svg class="delete-icon" data-id="${account.id}" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zM19 4h-3.5l-1-1h-5l-1 1H5v2h14z"/></svg>` : ''}
+                    </div>
+                `;
+                
+                // Add click listener for selection
+                item.querySelector('.account-item-details').addEventListener('click', () => {
+                    if (account.id !== currentAccountId) {
+                        closeModal(modal);
+                        // ใช้ setTimeout เพื่อให้ Modal ปิดก่อนเรียก renderAccountData
+                        setTimeout(() => renderAccountData(account.id), 300); 
+                    }
+                });
+                
+                // Add click listener for edit icon
+                item.querySelector('.edit-icon').addEventListener('click', (e) => {
+                    e.stopPropagation(); 
+                    // หา ID จาก data-id ของ SVG (หรือ element แม่)
+                    accountToEditId = parseInt(e.currentTarget.dataset.id); 
+                    const accountToEdit = accounts.find(acc => acc.id === accountToEditId);
+                    editAccountNameInput.value = accountToEdit.name;
+                    closeModal(modal);
+                    openModal(editModal);
+                });
+                
+                // Add click listener for delete icon (ถ้ามี)
+                const deleteIcon = item.querySelector('.delete-icon');
+                if (deleteIcon) {
+                    deleteIcon.addEventListener('click', (e) => {
+                        e.stopPropagation(); 
+                        accountToDeleteId = parseInt(e.currentTarget.dataset.id);
+                        closeModal(modal);
+                        openModal(deleteConfirmModal);
+                    });
+                }
+                
+                accountListContainer.insertBefore(item, createNewBtnElement);
+            });
+            
+        }
+        
+        // --- MODAL LISTENERS (Account CRUD Logic) ---
+        
+        accountSelector.addEventListener('click', () => {
+            renderAccountModalList(getCurrentAccountId());
+            openModal(modal);
+        });
+        
+        // Helper to find the next available sequential ID
+        function getNextAccountId(accounts) {
+            if (accounts.length === 0) return 1;
+            const maxId = Math.max(...accounts.map(acc => acc.id));
+            return maxId + 1;
+        }
+
+        // CREATE NEW ACCOUNT
+        createNewBtn?.addEventListener('click', () => {
+            newAccountNameInput.value = ''; // Clear previous input
+            closeModal(modal);
+            openModal(confirmModal);
+        });
+
+        confirmCreateBtn?.addEventListener('click', () => {
+            const accounts = loadAccounts();
+            
+            // Find the highest ID and add 1
+            const newId = getNextAccountId(accounts); 
+            const newName = newAccountNameInput?.value.trim() || `บัญชีของฉัน ${newId}`;
+
+            const newAccount = { 
+                id: newId, 
+                name: newName, 
+                type: 'Savings', 
+                tag: 'Personal', 
+                balance: 0,
+                tagText: 'บัญชีใหม่',
+                dailyBudget: 500, 
+                monthlyBudget: 15000 
+            };
+            accounts.push(newAccount);
+            saveAccounts(accounts);
+            
+            // Set the new account as current and re-render the whole page
+            renderAccountData(newId);
+            closeModal(confirmModal);
+        });
+        
+        // SAVE EDIT ACCOUNT
+        saveEditBtn?.addEventListener('click', () => {
+            const newName = editAccountNameInput.value.trim();
+            if (newName && accountToEditId) {
+                const accounts = loadAccounts();
+                const accountIndex = accounts.findIndex(acc => acc.id === accountToEditId);
+                
+                if (accountIndex !== -1) {
+                    accounts[accountIndex].name = newName;
+                    saveAccounts(accounts);
+                    
+                    // หากบัญชีที่แก้ไขคือบัญชีปัจจุบัน ให้ Re-render ข้อมูลหลัก
+                    if (accountToEditId === getCurrentAccountId()) {
+                        renderAccountData(accountToEditId);
+                    }
+                    
+                    closeModal(editModal);
+                    accountToEditId = null;
+
+                    // กลับไปหน้า List Modal และ render ใหม่
+                    setTimeout(() => {
+                        openModal(modal);
+                    }, 300); 
+                }
+            } else {
+                 alert('กรุณากรอกชื่อบัญชี');
+            }
+        });
+
+        // CONFIRM DELETE ACCOUNT
+        confirmDeleteBtn?.addEventListener('click', () => {
+            if (accountToDeleteId) {
+                let accounts = loadAccounts();
+                const currentAccountId = getCurrentAccountId();
+                
+                if (accounts.length === 1) {
+                    alert('ไม่สามารถลบบัญชีสุดท้ายได้');
+                    closeModal(deleteConfirmModal);
+                    setTimeout(() => openModal(modal), 300);
+                    return;
+                }
+                
+                // 1. ลบบัญชี
+                accounts = accounts.filter(acc => acc.id !== accountToDeleteId);
+                saveAccounts(accounts);
+                
+                // 2. ลบรายการธุรกรรมที่ผูกกับบัญชีนี้ (สำคัญมาก)
+                let transactions = loadTransactions();
+                // ใช้ parseInt() ในการเปรียบเทียบเพื่อให้แน่ใจ
+                transactions = transactions.filter(t => parseInt(t.accountId) !== accountToDeleteId); 
+                localStorage.setItem(TRANSACTIONS_KEY, JSON.stringify(transactions));
+
+                if (accountToDeleteId === currentAccountId) {
+                    // หากลบบัญชีปัจจุบัน ให้สลับไปใช้บัญชีแรกสุดแล้ว Re-render
+                    const newCurrentId = accounts[0].id;
+                    renderAccountData(newCurrentId);
+                } else {
+                    // หากลบบัญชีอื่น ให้ Re-render ข้อมูลหลักและ Modal List (เพื่ออัปเดตสถานะ)
+                    renderAccountData(currentAccountId); 
+                }
+            }
+            closeModal(deleteConfirmModal);
+            accountToDeleteId = null;
+        });
+        
+        // --- MODAL CLOSE LISTENERS (เพื่อปิด Modal ได้ทุกช่องทาง) ---
+        function setupModalCloseListeners(targetModal, returnToModal = null) {
+            if (targetModal) {
+                const closeBtn = targetModal.querySelector('.close-button');
+                if(closeBtn) closeBtn.addEventListener('click', () => closeModal(targetModal));
+                
+                // Click outside to close
+                targetModal.addEventListener('click', (e) => {
+                    if (e.target === targetModal) {
+                        closeModal(targetModal);
+                        if(returnToModal) setTimeout(() => openModal(returnToModal), 300);
+                    }
+                });
+            }
+        }
+        
+        // Setup for all Modals
+        setupModalCloseListeners(modal);
+        // Setup for secondary modals (to return to the main list modal)
+        cancelCreateBtn.addEventListener('click', () => { closeModal(confirmModal); setTimeout(() => openModal(modal), 300); });
+        cancelEditBtn.addEventListener('click', () => { closeModal(editModal); setTimeout(() => openModal(modal), 300); });
+        cancelDeleteBtn.addEventListener('click', () => { closeModal(deleteConfirmModal); setTimeout(() => openModal(modal), 300); });
+        
+        // --- INITIAL RENDER ---
+        const currentAccountId = getCurrentAccountId();
+        renderAccountData(currentAccountId);
+        
+        // === Bottom Nav Logic ===
+        const allNavLinks = document.querySelectorAll('.bottom-nav a'); // เลือกที่แท็ก <a>
+        const currentPath = window.location.pathname.split('/').pop() || 'hello.html'; 
+
+        const activeIconLogic = () => {
+            allNavLinks.forEach(link => {
+                const icon = link.querySelector('.nav-icon');
+                const href = link.getAttribute('href');
+                const targetFile = href.split('/').pop();
+                
+                if (icon) {
+                    icon.classList.remove('active-icon');
+                    
+                    // กำหนดให้ไอคอนที่ตรงกับ URL ปัจจุบันเป็น Active
+                    // ในหน้า hello.html, targetFile คือ 'hello.html' 
+                    if (targetFile === currentPath) {
+                        icon.classList.add('active-icon');
+                    }
+                }
+            });
+        };
+        activeIconLogic();
+        // เรียกใช้ฟังก์ชันนี้เมื่อโหลดหน้าเสร็จ
+        activeIconLogic();
+        
+    });
+</script>

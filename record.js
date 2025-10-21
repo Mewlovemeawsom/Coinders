@@ -3,6 +3,7 @@ const dateDisplay = document.getElementById("dateDisplay");
 let currentDate = new Date();
 function updateDateDisplay() {
   const thMonths = ["ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค."];
+  // แก้ไขปีให้แสดงเป็น ค.ศ. (ไม่ต้อง +543)
   dateDisplay.textContent = `${currentDate.getDate()} ${thMonths[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
 }
 updateDateDisplay();
@@ -18,19 +19,19 @@ const monthLabel = document.getElementById("monthLabel");
 const cancelCalendar = document.getElementById("cancelCalendar");
 const okCalendar = document.getElementById("okCalendar");
 
-let selectedTempDate = new Date(); // เก็บวันที่เลือกชั่วคราว
+let selectedTempDate = new Date(currentDate.getTime()); // เก็บวันที่เลือกชั่วคราว เริ่มจากวันที่ปัจจุบัน
 
 // ===== ปุ่มเปิดปฏิทิน =====
 document.getElementById("openCalendar").onclick = () => {
   calendarModal.classList.add("show");
-  renderCalendar();
+  // ตั้งค่าวันที่เริ่มต้นในปฏิทินให้ตรงกับวันที่แสดงอยู่
+  selectedTempDate = new Date(currentDate.getTime()); 
+  renderCalendar(selectedTempDate.getFullYear(), selectedTempDate.getMonth());
 };
 
 // ===== ฟังก์ชันแสดงปฏิทิน =====
-function renderCalendar() {
+function renderCalendar(year, month) {
   calendarDays.innerHTML = "";
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
   const monthNames = [
     "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
     "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
@@ -63,9 +64,10 @@ function renderCalendar() {
 
     // วันเลือก
     if (
-      i === currentDate.getDate() &&
-      month === currentDate.getMonth() &&
-      year === currentDate.getFullYear()
+      selectedTempDate && // ตรวจสอบว่า selectedTempDate มีค่า
+      i === selectedTempDate.getDate() && // ใช้ selectedTempDate
+      month === selectedTempDate.getMonth() &&
+      year === selectedTempDate.getFullYear()
     ) {
       day.classList.add("selected");
     }
@@ -80,9 +82,21 @@ function renderCalendar() {
   }
 }
 
+// ===== ปุ่มเปลี่ยนเดือนในปฏิทิน (เพิ่ม) =====
+document.getElementById("prevMonth").onclick = () => {
+    selectedTempDate.setMonth(selectedTempDate.getMonth() - 1);
+    renderCalendar(selectedTempDate.getFullYear(), selectedTempDate.getMonth());
+};
+
+document.getElementById("nextMonth").onclick = () => {
+    selectedTempDate.setMonth(selectedTempDate.getMonth() + 1);
+    renderCalendar(selectedTempDate.getFullYear(), selectedTempDate.getMonth());
+};
+
+
 // ===== ปุ่มยกเลิก / ตกลง =====
 cancelCalendar.onclick = () => {
-  selectedTempDate = currentDate; // ยกเลิก: คืนค่าก่อนหน้า
+  // ไม่ต้องเปลี่ยน selectedTempDate
   calendarModal.classList.remove("show");
 };
 
@@ -93,95 +107,34 @@ okCalendar.onclick = () => {
 };
 
 
-
-
-
-
-// --- Popup หมวดหมู่ ---
+// --- Popup หมวดหมู่ (เหลือเฉพาะ Logic เปิด/ปิด modal) ---
 const catModal = document.getElementById("catModal");
 const openCategory = document.getElementById("openCategory");
 const closeCat = document.getElementById("closeCat");
-const confirmCat = document.getElementById("confirmCat");
-const tabExpense = document.getElementById("tabExpense");
-const tabIncome = document.getElementById("tabIncome");
-const expenseGrid = document.getElementById("expenseGrid");
-const incomeGrid = document.getElementById("incomeGrid");
-const catIcon = document.getElementById("catIcon");
-const catText = document.getElementById("catText");
+const catModalContent = catModal?.querySelector('.modal');
 
-openCategory.onclick = () => catModal.classList.add("show");
-closeCat.onclick = () => catModal.classList.remove("show");
 
-tabExpense.onclick = () => {
-  tabExpense.classList.add("active");
-  tabIncome.classList.remove("active");
-  expenseGrid.classList.remove("hidden");
-  incomeGrid.classList.add("hidden");
-};
-tabIncome.onclick = () => {
-  tabIncome.classList.add("active");
-  tabExpense.classList.remove("active");
-  incomeGrid.classList.remove("hidden");
-  expenseGrid.classList.add("hidden");
-};
-
-let selectedItem = document.querySelector(".item.active");
-document.querySelectorAll(".item").forEach(item => {
-  item.onclick = () => {
-    document.querySelectorAll(".item").forEach(i => i.classList.remove("active"));
-    item.classList.add("active");
-    selectedItem = item;
-  };
-});
-
-confirmCat.onclick = () => {
-  if (selectedItem) {
-    catIcon.className = `fa-solid ${selectedItem.dataset.icon}`;
-    catText.textContent = selectedItem.dataset.text;
-  }
-  catModal.classList.remove("show");
-};
-
-// --- เสริมให้แน่ใจ: คลิกที่กล่องหมวดหมู่จะเปิด modal เสมอ ---
-const openCategoryBtn = document.getElementById('openCategory');
-const catOverlay = document.getElementById('catModal'); // ควรมี id catModal
-const catModalContent = catOverlay?.querySelector('.modal');
-
-// เปิด modal ทั้งคลิกและคีย์บอร์ด (Enter / Space)
-if (openCategoryBtn) {
-  openCategoryBtn.addEventListener('click', () => catOverlay.classList.add('show'));
-  openCategoryBtn.addEventListener('keydown', (e) => {
+// เปิด modal ทั้งคลิกและคีย์บอร์ด
+if (openCategory) {
+  openCategory.addEventListener('click', () => catModal.classList.add('show'));
+  openCategory.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
       e.preventDefault();
-      catOverlay.classList.add('show');
+      catModal.classList.add('show');
     }
   });
 }
 
-// ปิดเมื่อกดปุ่ม close (คุณมีปุ่ม closeCat อยู่แล้ว)
-if (typeof closeCat !== 'undefined') {
-  closeCat.addEventListener('click', () => catOverlay.classList.remove('show'));
+// ปิดเมื่อกดปุ่ม close (closeCat)
+if (closeCat) {
+  closeCat.addEventListener('click', () => catModal.classList.remove('show'));
 }
 
-// ปิดเมื่อคลิกด้านนอก modal (overlay click) — แต่ถ้าคลิกใน modal ไม่ปิด
-if (catOverlay && catModalContent) {
-  catOverlay.addEventListener('click', (ev) => {
+// ปิดเมื่อคลิกด้านนอก modal (overlay click)
+if (catModal && catModalContent) {
+  catModal.addEventListener('click', (ev) => {
     if (!catModalContent.contains(ev.target)) {
-      catOverlay.classList.remove('show');
+      catModal.classList.remove('show');
     }
   });
 }
-
-// ถ้ามีการเลือก category (selectedItem) และกด confirmCat โค้ดเดิมจะอัพเดต icon/text
-// (คุณมี confirmCat.onclick อยู่แล้วในไฟล์) — ถ้าต้องการ ผมใส่การอัพเดตให้ซ้ำอีกครั้ง:
-if (typeof confirmCat !== 'undefined') {
-  confirmCat.addEventListener('click', () => {
-    if (selectedItem) {
-      catIcon.className = `fa-solid ${selectedItem.dataset.icon}`;
-      catText.textContent = selectedItem.dataset.text;
-    }
-    catOverlay.classList.remove('show');
-  });
-}
-
-

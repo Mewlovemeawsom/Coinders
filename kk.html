@@ -752,27 +752,27 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
 
-      // --- DATA ---
-      let accountsData = [
-        {
-          id: 1,
-          name: 'บัญชีของฉัน 1',
-          income: 2500,
-          expense: 298,
-          items: 5,
-          days: 2,
-          dailyBudget: 150,
-          dailyUsedPercent: 66,
-          monthlyBudget: 5000,
-          monthlyUsedPercent: 6,
-        }
-      ];
-      let currentAccountId = 1;
-      let accountToEditId = null;
-      let accountToDeleteId = null;
+        // --- DATA (แก้ไขส่วนนี้) ---
+        let accountsData = [
+            {
+                id: 1,
+                name: 'บัญชีของฉัน 1',
+                income: 0,        // แก้ไขเป็น 0
+                expense: 0,       // แก้ไขเป็น 0
+                items: 0,         // แก้ไขเป็น 0
+                days: 0,          // แก้ไขเป็น 0
+                dailyBudget: 500, // สามารถคงค่าเริ่มต้นของ Budget ไว้ได้
+                dailyUsedPercent: 0,
+                monthlyBudget: 15000,
+                monthlyUsedPercent: 0,
+            }
+        ];
+        let currentAccountId = 1;
+        let accountToEditId = null;
+        let accountToDeleteId = null;
 
-      // --- ELEMENTS ---
-      const accountSelector = document.getElementById('accountSelector');
+        // --- ELEMENTS ---
+        const accountSelector = document.getElementById('accountSelector');
       // Main UI elements
       const mainAccountName = document.getElementById('mainAccountName');
       const cardAccountName = document.getElementById('cardAccountName');
@@ -925,14 +925,14 @@
         const newAccount = {
           id: newId,
           name: `บัญชีของฉัน ${accountsData.length + 1}`,
-          income: Math.floor(Math.random() * 10000),
-          expense: Math.floor(Math.random() * 5000),
-          items: Math.floor(Math.random() * 20),
-          days: Math.floor(Math.random() * 10),
-          dailyBudget: Math.floor(Math.random() * 500) + 100,
-          dailyUsedPercent: Math.floor(Math.random() * 100),
-          monthlyBudget: Math.floor(Math.random() * 15000) + 5000,
-          monthlyUsedPercent: Math.floor(Math.random() * 100),
+          income: 0,          // แก้ไขเป็น 0
+          expense: 0,         // แก้ไขเป็น 0
+          items: 0,           // แก้ไขเป็น 0
+          days: 0,            // แก้ไขเป็น 0
+          dailyBudget: 500,   // ตั้งค่า Budget Limit เริ่มต้น
+          dailyUsedPercent: 0,  // แก้ไขเป็น 0 %
+          monthlyBudget: 15000, // ตั้งค่า Budget Limit เริ่มต้น
+          monthlyUsedPercent: 0, // แก้ไขเป็น 0 %
         };
         accountsData.push(newAccount);
         currentAccountId = newId;
@@ -996,4 +996,3 @@
 
 </body>
 </html>
-

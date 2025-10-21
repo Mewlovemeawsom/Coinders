@@ -9,7 +9,6 @@
 <style>
   body {
     margin: 0;
-    /* เปลี่ยนฟอนต์จาก 'Inter' เป็น 'Kanit' */
     font-family: 'Kanit', sans-serif;
     background: #f3f3f3;
     padding-bottom: 70px; 
@@ -17,7 +16,7 @@
   
   h1 {
     text-align: center;
-    color: #1B5E20; 
+    color: #124170; 
     margin-top: 16px; 
   }
   
@@ -28,7 +27,7 @@
     margin: 16px auto; 
     width: 90%; 
     max-width: 400px;
-    background: #66BB6A; 
+    background: #67C090; 
     border-radius: 999px; 
     padding: 4px; 
     box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
@@ -44,7 +43,7 @@
     background: transparent; 
     color: #fff; 
     font-weight: 600; 
-    white-space: nowrap; /* ป้องกันข้อความไม่ให้ขึ้นบรรทัดใหม่ */
+    white-space: nowrap; 
   }
   .tabs .active {
     background: #154360; 
@@ -76,15 +75,34 @@
     align-items: center;
     gap: 4px;
     flex-shrink: 0;
+    line-height: 1.2;
+    white-space: normal;
+    text-align: center;
   }
   
   /* สไตล์ปุ่มที่ถูกเลือก (Active Filter) - สีเขียวอ่อน */
   .filters .active-filter {
-    background: #E0F2E9; 
-    color: #1B5E20; 
+    background: #DDF4E7; 
+    color: #67C090; 
     border: 1px solid #66BB6A; 
     padding: 7px 15px; 
   }
+  
+  /* NEW: Style สำหรับข้อความภายในปุ่ม Filter - ถูกปรับให้แสดงผลเดียวเท่านั้น */
+  .filter-text-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+  }
+  /* NEW: ลบ Style ที่ใช้แสดงจำนวนเงินในปุ่ม */
+  .filter-amount-display,
+  .filter-amount-positive,
+  .filter-amount-negative {
+      display: none;
+  }
+
 
   .filters button svg {
     width: 18px;
@@ -115,31 +133,29 @@
     gap: 10px;
   }
 
-  /* ชื่อตัวกรอง (ทั้งหมด/วันนี้/เดือน) */
   .card-header .title {
-    font-weight: bold;
     font-size: 18px;
     color: #333;
   }
-
-  /* สไตล์สำหรับยอดรวมที่เป็นบวก/Active - สีเขียว */
-  .total-amount {
-    background: #E0F2E9; 
-    color: #1B5E20; 
-    font-size: 14px;
-    font-weight: 600;
-    padding: 4px 10px;
-    border-radius: 999px;
-  }
   
-  /* สไตล์สำหรับยอดรวมติดลบ - สีแดง */
+  /* NEW: Style สำหรับยอดรวมคงเหลือ */
+  .net-amount-display {
+    font-size: 16px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    margin-left: 10px;
+    white-space: nowrap;
+    color: #333;
+  }
+  .net-positive {
+    background: #DDF4E7; /* สีเขียวอ่อน */
+  }
   .net-negative {
-    background: #FFCDD2; 
-    color: #C62828; 
-    font-size: 14px;
-    font-weight: 600;
-    padding: 4px 10px;
-    border-radius: 999px;
+    background: #FFE2E2; /* สีแดงอ่อน */
+  }
+  /* [ลบจำนวนเงิน] - ซ่อนข้อความจำนวนเงินสุทธิเดิม */
+  .total-amount, .net-negative-old {
+    display: none; 
   }
 
   .card-header .item-count {
@@ -173,12 +189,13 @@
     padding: 12px 16px;
     font-weight: 500;
   }
+  /* NEW: สีพื้นหลังตามโจทย์ (DDF4E7 และ FFE2E2) */
   .income-box {
-    background: #d7f7df; 
+    background: #DDF4E7; 
     color: #1b5e20; 
   }
   .expense-box {
-    background: #fbd4d4; 
+    background: #FFE2E2; 
     color: #c62828; 
   }
   
@@ -187,18 +204,32 @@
     flex-direction: column;
     text-align: left;
   }
-  .income-box strong, .expense-box strong {
-    font-size: 18px; 
-    font-weight: bold;
+  
+  /* NEW: แสดงจำนวนเงินรายรับ/รายจ่าย */
+  .amount-display {
+    font-size: 18px;
+    white-space: nowrap;
   }
+  .income-box strong {
+    color: #1b5e20; 
+  }
+  .expense-box strong {
+    color: #c62828; 
+  }
+  
   .income-box p, .expense-box p {
     margin: 0;
     font-size: 16px;
-    font-weight: bold;
   }
   .income-box small, .expense-box small {
     font-size: 12px;
     margin-top: 2px;
+  }
+  
+  /* [ลบจำนวนเงิน] - ซ่อนจำนวนเงินเดิม */
+  .income-box strong:not(.amount-display), 
+  .expense-box strong:not(.amount-display) {
+    display: none;
   }
   
   /* --- Content Styles for 'รายจ่าย'/'รายรับ' --- */
@@ -216,7 +247,6 @@
 
   .category-header h2 {
     font-size: 20px;
-    font-weight: bold;
     color: #333;
     margin: 0 0 4px 0;
   }
@@ -232,7 +262,7 @@
     color: #888;
   }
   
-  /* สไตล์สำหรับแถบหมวดหมู่ย่อย */
+  /* NEW: Style สำหรับรายการหมวดหมู่ (เช่น อาหาร 205 THB) */
   .category-item {
     display: flex;
     align-items: center;
@@ -266,12 +296,12 @@
   
   /* Expense Colors */
   .category-item.expense .icon-bg {
-    color: #C62828; /* Red dark */
+    color: #C62828; 
   }
   
   /* Income Colors */
   .category-item.income .icon-bg {
-    color: #1b5e20; /* Green dark */
+    color: #1b5e20; 
   }
 
   .category-item .name {
@@ -291,20 +321,25 @@
     color: #888;
   }
 
-  .category-item .amount {
+  /* NEW: แสดงจำนวนเงินในรายการหมวดหมู่ */
+  .category-item .amount-display {
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 600;
   }
   
-  .category-item.expense .amount {
+  .category-item.expense .amount-display {
     color: #C62828;
   }
   
-  .category-item.income .amount {
+  .category-item.income .amount-display {
     color: #1b5e20;
   }
 
-  /* --- Calendar View Styles (ไม่เปลี่ยนแปลง) --- */
+  .category-item .amount {
+    display: none; /* ซ่อน amount เก่า */
+  }
+
+  /* --- Calendar View Styles --- */
   #calendar-view {
     background: #f3f3f3; 
     padding-top: 48px;
@@ -372,23 +407,23 @@
     margin: 0;
   }
 
+  /* NEW: Style สำหรับยอดรวมรายเดือนในปฏิทิน */
   .month-summary {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.2;
     font-weight: 500;
   }
   .month-summary .income-text {
-    color: #1B5E20; 
+    color: #1b5e20;
   }
   .month-summary .expense-text {
-    color: #C62828; 
+    color: #C62828;
   }
   .month-summary .net-text {
     color: #333;
-    font-weight: 600;
   }
   
   .calendar-grid {
@@ -399,14 +434,13 @@
   }
 
   .day-header {
-    font-weight: bold;
     color: #888;
     padding: 8px 0;
   }
   
   .day-cell {
     border: 1px solid #eee;
-    height: 48px;
+    height: 60px; /* เพิ่มความสูงรองรับตัวเลข */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -423,22 +457,33 @@
     margin-bottom: 2px;
   }
   
-  .day-cell .income-value {
-    font-size: 9px;
-    color: #1B5E20;
-    line-height: 1.1;
-  }
+  /* FIX: แสดงจำนวนเงินจริงในช่องปฏิทิน */
+  .day-cell .income-value,
   .day-cell .expense-value {
+    display: block;
     font-size: 9px;
-    color: #C62828;
     line-height: 1.1;
+    font-weight: 600;
+    white-space: nowrap;
   }
 
+  .day-cell .income-value {
+    color: #1b5e20; 
+  }
+  .day-cell .expense-value {
+    color: #C62828; 
+  }
+  
   .day-cell.inactive-month {
     color: #bbb;
     background: #fafafa;
   }
-
+  
+  .day-cell.current-date {
+    background-color: #E0F2E9; 
+    border: 1px solid #66BB6A;
+  }
+  
   /* --- Bottom Navigation Styles (ไม่เปลี่ยนแปลง) --- */
   .bottom-nav {
     position: fixed;
@@ -484,8 +529,12 @@
 
   <div class="filters" id="date-filters">
     <button class="active-filter" onclick="setActiveFilter(this, 'all')">ทั้งหมด</button>
-    <button onclick="setActiveFilter(this, 'today')">วันนี้</button>
-    <button onclick="setActiveFilter(this, 'month')">ก.ย. 2025</button>
+    <button id="today-filter-btn" onclick="setActiveFilter(this, 'today')">
+      วันนี้
+    </button>
+    <button id="month-filter-btn" onclick="setActiveFilter(this, 'month')">
+      เดือนปัจจุบัน
+    </button> 
     <button onclick="setActiveFilter(this, 'calendar')">
       ปฏิทิน 
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19 4h-2V3a1 1 0 0 0-2 0v1H9V3a1 1 0 0 0-2 0v1H5a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3m1 15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-7h16Zm0-9H4V7a1 1 0 0 1 1-1h2v1a1 1 0 0 0 2 0V6h6v1a1 1 0 0 0 2 0V6h2a1 1 0 0 1 1 1Z"/></svg>
@@ -497,8 +546,9 @@
       <div class="card-header">
         <span class="title" id="filter-title">ทั้งหมด</span>
         <div class="summary-line">
-          <span class="item-count" id="item-count">5 รายการ</span>
-          <span class="total-amount" id="total-amount">2,202 THB</span> 
+          <span class="item-count" id="item-count">0 รายการ</span>
+          <span class="net-amount-display" id="net-amount-display"></span>
+          <span class="total-amount" id="total-amount">0 THB</span> 
         </div>
       </div>
       
@@ -510,16 +560,18 @@
         <div class="income-box">
           <div>
             <p>รายรับ</p>
-            <small id="income-count">1 รายการ</small>
+            <small id="income-count">0 รายการ</small>
           </div>
-          <strong id="income-amount">2,500 THB</strong>
+          <strong class="amount-display" id="income-amount-display">0 THB</strong>
+          <strong id="income-amount">0 THB</strong>
         </div>
         <div class="expense-box">
           <div>
             <p>รายจ่าย</p>
-            <small id="expense-count">4 รายการ</small>
+            <small id="expense-count">0 รายการ</small>
           </div>
-          <strong id="expense-amount">298 THB</strong>
+          <strong class="amount-display" id="expense-amount-display">0 THB</strong>
+          <strong id="expense-amount">0 THB</strong>
         </div>
       </div>
     </div>
@@ -530,37 +582,13 @@
       <div class="category-header">
         <h2>รายจ่าย</h2>
         <div class="summary-line">
-          <span class="count">4 รายการ</span>
-          <span class="net-negative">298 THB</span> 
+          <span class="count" id="expense-category-count">0 รายการ</span>
+          <span class="net-negative" style="display: none;">0 THB</span> 
         </div>
       </div>
       
-      <div class="category-list">
-        <div class="category-item expense">
-          <div class="category-item-details">
-            <div class="icon-bg">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M18.06 23h1.66c.84 0 1.53-.65 1.63-1.47L23 5.05h-5V1h-1.97v4.05h-4.97l.3 2.34c1.71.47 3.31 1.32 4.27 2.26c1.44 1.42 2.43 2.89 2.43 5.29zM1 22v-1h15.03v1c0 .54-.45 1-1.03 1H2c-.55 0-1-.46-1-1m15.03-7C16.03 7 1 7 1 15zM1 17h15v2H1z"/></svg>
-            </div>
-            <div class="name">
-              <span>อาหาร</span>
-              <small>3 รายการ</small>
-            </div>
-          </div>
-          <span class="amount">205 THB</span>
-        </div>
-        
-        <div class="category-item expense">
-          <div class="category-item-details">
-            <div class="icon-bg">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M17 18c-1.11 0-2 .89-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2M1 2v2h2l3.6 7.59l-1.36 2.45c-.15.28-.24.61-.24.96a2 2 0 0 0 2 2h12v-2H7.42a.25.25 0 0 1-.25-.25q0-.075.03-.12L8.1 13h7.45c.75 0 1.41-.42 1.75-1.03l3.58-6.47c.07-.16.12-.33.12-.5a1 1 0 0 0-1-1H5.21l-.94-2M7 18c-1.11 0-2 .89-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2"/></svg>
-            </div>
-            <div class="name">
-              <span>ของใช้</span>
-              <small>1 รายการ</small>
-            </div>
-          </div>
-          <span class="amount">93 THB</span>
-        </div>
+      <div class="category-list" id="expense-category-list">
+        <p style="text-align: center; color: #777; margin-top: 20px;">ยังไม่มีรายการรายจ่ายที่ถูกบันทึก</p>
       </div>
     </div>
   </div>
@@ -570,24 +598,13 @@
       <div class="category-header">
         <h2>รายรับ</h2>
         <div class="summary-line">
-          <span class="count">1 รายการ</span>
-          <span class="total-amount">2,500 THB</span> 
+          <span class="count" id="income-category-count">0 รายการ</span>
+          <span class="total-amount" style="display: none;">0 THB</span> 
         </div>
       </div>
       
-      <div class="category-list">
-        <div class="category-item income">
-          <div class="category-item-details">
-            <div class="icon-bg">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><defs><path id="SVGgvnbobcx" d="M21.5 11v10h-19V11z"/></defs><g fill="none"><use href="#SVGgvnbobcx"/><path d="M12 13.5a2.5 2.5 0 1 1 0 5a2.5 2.5 0 0 1 0-5m5.136-7.209L19 5.67l1.824 5.333H3.002L3 11.004L14.146 2.1z"/><path stroke="currentColor" stroke-linecap="square" stroke-width="2" d="M21 11.003h-.176L19.001 5.67L3.354 11.003L3 11m-.5.004H3L14.146 2.1l2.817 3.95"/><g stroke="currentColor" stroke-linecap="square" stroke-width="2"><path d="M14.5 16a2.5 2.5 0 1 1-5 0a2.5 2.5 0 0 1 5 0Z"/><use href="#SVGgvnbobcx"/><path d="M2.5 11h2a2 2 0 0 1-2 2zm19 0h-2a2 2 0 0 0 2 2zm-19 10h2.002A2 2 0 0 0 2.5 18.998zm19 0h-2a2 2 0 0 1 2-2z"/></g></g></svg>
-            </div>
-            <div class="name">
-              <span>รายรับ</span>
-              <small>1 รายการ</small>
-            </div>
-          </div>
-          <span class="amount">2,500 THB</span>
-        </div>
+      <div class="category-list" id="income-category-list">
+        <p style="text-align: center; color: #777; margin-top: 20px;">ยังไม่มีรายการรายรับที่ถูกบันทึก</p>
       </div>
     </div>
   </div>
@@ -603,154 +620,18 @@
     </button>
     <span class="title">ปฏิทิน</span>
   </div>
-
-  <div class="calendar-card">
-    <div class="month-header">
-      <h3 class="month-title">ก.ย. 2025</h3>
-      <div class="month-summary">
-        <span class="income-text">2,500 THB</span>
-        <span class="expense-text">298 THB</span>
-        <span class="net-text">2,202 THB</span>
-      </div>
-    </div>
+  
+  <div id="calendar-cards-container">
     
-    <div class="calendar-grid">
-      <span class="day-header">Su</span>
-      <span class="day-header">Mo</span>
-      <span class="day-header">Tu</span>
-      <span class="day-header">We</span>
-      <span class="day-header">Th</span>
-      <span class="day-header">Fr</span>
-      <span class="day-header">Sa</span>
-      
-      <span class="day-cell inactive-month"><span class="date-num">31</span></span>
-      
-      <span class="day-cell">
-        <span class="date-num">1</span>
-        <span class="income-value">2,500 THB</span>
-      </span>
-      <span class="day-cell">
-        <span class="date-num">2</span>
-        <span class="expense-value">60</span>
-      </span>
-      <span class="day-cell"><span class="date-num">3</span></span>
-      <span class="day-cell"><span class="date-num">4</span></span>
-      <span class="day-cell"><span class="date-num">5</span></span>
-      <span class="day-cell"><span class="date-num">6</span></span>
-
-      <span class="day-cell"><span class="date-num">7</span></span>
-      <span class="day-cell"><span class="date-num">8</span></span>
-      <span class="day-cell"><span class="date-num">9</span></span>
-      <span class="day-cell"><span class="date-num">10</span></span>
-      <span class="day-cell"><span class="date-num">11</span></span>
-      <span class="day-cell"><span class="date-num">12</span></span>
-      <span class="day-cell"><span class="date-num">13</span></span>
-
-      <span class="day-cell"><span class="date-num">14</span></span>
-      <span class="day-cell"><span class="date-num">15</span></span>
-      <span class="day-cell"><span class="date-num">16</span></span>
-      <span class="day-cell"><span class="date-num">17</span></span>
-      <span class="day-cell"><span class="date-num">18</span></span>
-      <span class="day-cell"><span class="date-num">19</span></span>
-      <span class="day-cell"><span class="date-num">20</span></span>
-
-      <span class="day-cell"><span class="date-num">21</span></span>
-      <span class="day-cell"><span class="date-num">22</span></span>
-      <span class="day-cell"><span class="date-num">23</span></span>
-      <span class="day-cell"><span class="date-num">24</span></span>
-      <span class="day-cell"><span class="date-num">25</span></span>
-      <span class="day-cell"><span class="date-num">26</span></span>
-      <span class="day-cell"><span class="date-num">27</span></span>
-
-      <span class="day-cell"><span class="date-num">28</span></span>
-      <span class="day-cell"><span class="date-num">29</span></span>
-      <span class="day-cell"><span class="date-num">30</span></span>
-      
-      <span class="day-cell inactive-month"><span class="date-num">1</span></span>
-      <span class="day-cell inactive-month"><span class="date-num">2</span></span>
-      <span class="day-cell inactive-month"><span class="date-num">3</span></span>
-      <span class="day-cell inactive-month"><span class="date-num">4</span></span>
     </div>
-  </div>
-
-  <div class="calendar-card">
-    <div class="month-header">
-      <h3 class="month-title">ส.ค. 2025</h3>
-      <div class="month-summary">
-        <span class="income-text">0 THB</span>
-        <span class="expense-text">0 THB</span>
-        <span class="net-text">0 THB</span>
-      </div>
-    </div>
-    
-    <div class="calendar-grid">
-      <span class="day-header">Su</span>
-      <span class="day-header">Mo</span>
-      <span class="day-header">Tu</span>
-      <span class="day-header">We</span>
-      <span class="day-header">Th</span>
-      <span class="day-header">Fr</span>
-      <span class="day-header">Sa</span>
-      
-      <span class="day-cell inactive-month"><span class="date-num">27</span></span>
-      <span class="day-cell inactive-month"><span class="date-num">28</span></span>
-      <span class="day-cell inactive-month"><span class="date-num">29</span></span>
-      <span class="day-cell inactive-month"><span class="date-num">30</span></span>
-      <span class="day-cell inactive-month"><span class="date-num">31</span></span>
-
-      <span class="day-cell"><span class="date-num">1</span></span>
-      <span class="day-cell"><span class="date-num">2</span></span>
-
-      <span class="day-cell"><span class="date-num">3</span></span>
-      <span class="day-cell"><span class="date-num">4</span></span>
-      <span class="day-cell"><span class="date-num">5</span></span>
-      <span class="day-cell"><span class="date-num">6</span></span>
-      <span class="day-cell"><span class="date-num">7</span></span>
-      <span class="day-cell"><span class="date-num">8</span></span>
-      <span class="day-cell"><span class="date-num">9</span></span>
-
-      <span class="day-cell"><span class="date-num">10</span></span>
-      <span class="day-cell"><span class="date-num">11</span></span>
-      <span class="day-cell"><span class="date-num">12</span></span>
-      <span class="day-cell"><span class="date-num">13</span></span>
-      <span class="day-cell"><span class="date-num">14</span></span>
-      <span class="day-cell"><span class="date-num">15</span></span>
-      <span class="day-cell"><span class="date-num">16</span></span>
-
-      <span class="day-cell"><span class="date-num">17</span></span>
-      <span class="day-cell"><span class="date-num">18</span></span>
-      <span class="day-cell"><span class="date-num">19</span></span>
-      <span class="day-cell"><span class="date-num">20</span></span>
-      <span class="day-cell"><span class="date-num">21</span></span>
-      <span class="day-cell"><span class="date-num">22</span></span>
-      <span class="day-cell"><span class="date-num">23</span></span>
-
-      <span class="day-cell"><span class="date-num">24</span></span>
-      <span class="day-cell"><span class="date-num">25</span></span>
-      <span class="day-cell"><span class="date-num">26</span></span>
-      <span class="day-cell"><span class="date-num">27</span></span>
-      <span class="day-cell"><span class="date-num">28</span></span>
-      <span class="day-cell"><span class="date-num">29</span></span>
-      <span class="day-cell"><span class="date-num">30</span></span>
-      
-      <span class="day-cell inactive-month"><span class="date-num">31</span></span>
-      <span class="day-cell inactive-month"><span class="date-num">1</span></span>
-      <span class="day-cell inactive-month"><span class="date-num">2</span></span>
-      <span class="day-cell inactive-month"><span class="date-num">3</span></span>
-      <span class="day-cell inactive-month"><span class="date-num">4</span></span>
-      <span class="day-cell inactive-month"><span class="date-num">5</span></span>
-      <span class="day-cell inactive-month"><span class="date-num">6</span></span>
-    </div>
-  </div>
 </div>
 
 <div class="bottom-nav">
-  <a href="hah.html">
+  <a href="hello.html">
     <div class="nav-icon" onclick="setActiveIcon(this)">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
         <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-            <path d="m3 9l9-7l9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/>
-            <path d="M9 22V12h6v10"/>
+            <path d="m3 9l9-7l9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M9 22V12h6v10"/>
         </g>
     </svg>
   </div>
@@ -764,103 +645,235 @@
   </div>
   </a>
 
-  <div class="nav-icon active-icon" onclick="setActiveIcon(this)">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-      <path fill="currentColor" d="M2.7 17.625q-.3-.3-.288-.712t.288-.688l5.275-5.35Q8.55 10.3 9.4 10.3t1.425.575l2.575 2.6l5.2-5.15H17q-.425 0-.712-.288T16 7.326t.288-.712t.712-.288h4q.425 0 .713.288t.287.712v4q0 .425-.288.713t-.712.287t-.712-.287t-.288-.713v-1.6L14.825 14.9q-.575.575-1.425.575t-1.425-.575L9.4 12.325l-5.3 5.3q-.275.275-.7.275t-.7-.275"/>
-    </svg>
-  </div>
+  <a href="graph.html">
+    <div class="nav-icon active-icon" onclick="setActiveIcon(this)">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M2.7 17.625q-.3-.3-.288-.712t.288-.688l5.275-5.35Q8.55 10.3 9.4 10.3t1.425.575l2.575 2.6l5.2-5.15H17q-.425 0-.712-.288T16 7.326t.288-.712t.712-.288h4q.425 0 .713.288t.287.712v4q0 .425-.288.713t-.712.287t-.712-.287t-.288-.713v-1.6L14.825 14.9q-.575.575-1.425.575t-1.425-.575L9.4 12.325l-5.3 5.3q-.275.275-.7.275t-.7-.275"/>
+      </svg>
+    </div>
+  </a>
 
   <a href="Profile.html">
     <div class="nav-icon" onclick="setActiveIcon(this)">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-      <path fill="currentColor" d="M4 18q-.425 0-.712-.288T3 17t.288-.712T4 16h16q.425 0 .713.288T21 17t-.288.713T20 18zm0-5q-.425 0-.712-.288T3 12t.288-.712T4 11h16q.425 0 .713.288T21 12t-.288.713T20 13zm0-5q-.425 0-.712-.288T3 7t.288-.712T4 6h16q.425 0 .713.288T21 7t-.288.713T20 8z"/>
-    </svg>
-  </div>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M4 18q-.425 0-.712-.288T3 17t.288-.712T4 16h16q.425 0 .713.288T21 17t-.288.713T20 18zM4 13q-.425 0-.712-.288T3 12t.288-.712T4 11h16q.425 0 .713.288T21 12t-.288.713T20 13zM4 8q-.425 0-.712-.288T3 7t.288-.712T4 6h16q.425 0 .713.288T21 7t-.288.713T20 8z"/>
+      </svg>
+    </div>
   </a>
 
 </div>
 
 <script>
-// --- Data for Tabs & Filters ---
+// *** 1. ดึงข้อมูลจริงจาก Local Storage ***
+const TRANSACTIONS_KEY = 'transactions';
+function getTransactions() {
+    const json = localStorage.getItem(TRANSACTIONS_KEY);
+    const transactions = json ? JSON.parse(json) : [];
+    
+    // Month Map ที่สมบูรณ์
+    const monthMap = { "ม.ค.": 0, "ก.พ.": 1, "มี.ค.": 2, "เม.ย.": 3, "พ.ค.": 4, "มิ.ย.": 5, "ก.ค.": 6, "ส.ค.": 7, "ก.ย.": 8, "ต.ค.": 9, "พ.ย.": 10, "ธ.ค.": 11 };
+
+    return transactions.map(t => {
+        const parts = t.date ? t.date.split(' ') : [];
+        let dateObj = null;
+
+        if (parts.length === 3) {
+            const day = parseInt(parts[0]);
+            const monthIndex = monthMap[parts[1]];
+            const year = parseInt(parts[2]);
+            if (!isNaN(day) && monthIndex !== undefined && !isNaN(year)) {
+                 dateObj = new Date(year, monthIndex, day);
+            }
+        }
+        
+        return {
+            ...t,
+            amount: parseFloat(t.amount) || 0,
+            date: dateObj || new Date()
+        };
+    });
+}
+
+// ฟังก์ชันสำหรับคำนวณยอดรวมจาก transactions
+function calculateSummary(filteredTransactions) {
+    let incomeSum = 0;
+    let expenseSum = 0;
+    
+    filteredTransactions.forEach(t => {
+        if (t.type === 'income') {
+            incomeSum += t.amount;
+        } else if (t.type === 'expense') {
+            expenseSum += t.amount;
+        }
+    });
+    
+    const netAmount = incomeSum - expenseSum;
+    
+    return {
+        itemCount: filteredTransactions.length,
+        incomeAmount: incomeSum,
+        expenseAmount: expenseSum,
+        netAmount: netAmount,
+        netAmountClass: netAmount >= 0 ? 'net-positive' : 'net-negative', 
+        incomeCount: filteredTransactions.filter(t => t.type === 'income').length,
+        expenseCount: filteredTransactions.filter(t => t.type === 'expense').length,
+        chartData: [incomeSum, expenseSum],
+        
+        // NEW: จัดกลุ่มตามหมวดหมู่เพื่อแสดงในแท็บรายจ่าย/รายรับ
+        categories: filteredTransactions.reduce((acc, t) => {
+            if (!acc[t.category]) {
+                acc[t.category] = { category: t.category, count: 0, sum: 0, iconHtml: t.iconHtml, type: t.type };
+            }
+            acc[t.category].count++;
+            acc[t.category].sum += t.amount;
+            return acc;
+        }, {})
+    };
+}
+
+// โหลดและคำนวณข้อมูลเริ่มต้นทั้งหมด
+const allRawTransactions = getTransactions();
+const allData = calculateSummary(allRawTransactions);
+
+// ตัวแปรเก็บข้อมูลสำหรับแต่ละ Filter Key
 const filterData = {
-    'all': {
-        title: 'ทั้งหมด',
-        itemCount: 5,
-        netAmount: 2202,
-        netAmountClass: 'total-amount', 
-        incomeCount: 1,
-        incomeAmount: 2500,
-        expenseCount: 4,
-        expenseAmount: 298,
-        chartData: [2500, 298],
-    },
-    'today': {
-        title: 'วันนี้',
-        itemCount: 1,
-        netAmount: -100, 
-        netAmountClass: 'net-negative',
-        incomeCount: 0,
-        incomeAmount: 0,
-        expenseCount: 1,
-        expenseAmount: 100,
-        chartData: [0, 100],
-    },
-    'month': {
-        title: 'ทั้งหมด', 
-        itemCount: 5,
-        netAmount: 2202,
-        netAmountClass: 'total-amount',
-        incomeCount: 1,
-        incomeAmount: 2500,
-        expenseCount: 4,
-        expenseAmount: 298,
-        chartData: [2500, 298],
-    }
+    'all': allData,
+    'today': calculateSummary(allRawTransactions.filter(t => {
+        const today = new Date();
+        return t.date.getDate() === today.getDate() &&
+               t.date.getMonth() === today.getMonth() &&
+               t.date.getFullYear() === today.getFullYear();
+    })),
+    'month': calculateSummary(allRawTransactions.filter(t => {
+        const today = new Date();
+        return t.date.getMonth() === today.getMonth() &&
+               t.date.getFullYear() === today.getFullYear();
+    }))
 };
 
-let currentActiveTab = 'all'; // State: 'all', 'expense', 'income'
-let currentActiveFilter = 'all'; // State: 'all', 'today', 'month', 'calendar'
+let currentActiveTab = 'all'; 
+let currentActiveFilter = 'all'; 
 let myChart; 
 
-// ฟังก์ชันสำหรับ format ตัวเลขเป็น THB
-function formatTHB(amount) {
-    return new Intl.NumberFormat('th-TH', { 
-        style: 'currency', 
-        currency: 'THB', 
-        minimumFractionDigits: 0 
-    }).format(amount);
+// ข้อมูลเดือนภาษาไทย
+const monthNames = [
+  "ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.",
+  "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."
+];
+
+// NEW: ฟังก์ชันสร้างรายการหมวดหมู่เดียว
+function createCategoryItem(categoryData) {
+    const isExpense = categoryData.type === 'expense';
+    const iconColor = isExpense ? '#C62828' : '#1b5e20';
+    const totalAmount = categoryData.sum.toLocaleString('th-TH');
+    
+    const fallbackIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>';
+    const displayIconHtml = categoryData.iconHtml && categoryData.iconHtml.trim() ? categoryData.iconHtml : fallbackIcon;
+
+    return `
+        <div class="category-item ${categoryData.type}">
+            <div class="category-item-details">
+                <div class="icon-bg" style="color: ${iconColor};">
+                    ${displayIconHtml}
+                </div>
+                <div class="name">
+                    <span>${categoryData.category}</span>
+                    <small>${categoryData.count} รายการ</small>
+                </div>
+            </div>
+            <strong class="amount-display">${totalAmount} THB</strong>
+            <div class="amount"></div>
+        </div>
+    `;
 }
+
+// NEW: ฟังก์ชันแสดงเนื้อหาในแท็บรายจ่าย/รายรับ
+function renderCategoryContent(tabType, filterKey) {
+    const data = filterData[filterKey] || allData;
+    const isExpense = tabType === 'expense';
+    
+    const categoryListElement = document.getElementById(`${tabType}-category-list`);
+    const countElement = document.getElementById(`${tabType}-category-count`);
+    
+    const categoriesArray = Object.values(data.categories)
+        .filter(cat => cat.type === tabType)
+        .sort((a, b) => b.sum - a.sum); // เรียงตามยอดรวมมากไปน้อย
+        
+    const totalItems = categoriesArray.reduce((sum, cat) => sum + cat.count, 0);
+
+    if (totalItems === 0) {
+        categoryListElement.innerHTML = `<p style="text-align: center; color: #777; margin-top: 20px;">ยังไม่มีรายการ${isExpense ? 'รายจ่าย' : 'รายรับ'}ที่ถูกบันทึก</p>`;
+    } else {
+        categoryListElement.innerHTML = categoriesArray.map(createCategoryItem).join('');
+    }
+    
+    // อัปเดตจำนวนรายการรวม
+    countElement.textContent = `${totalItems} รายการ`;
+}
+
+// ฟังก์ชันสร้าง HTML สำหรับแสดงจำนวนเงินบนปุ่ม Filter
+function formatAmountForFilterBtn(netAmount) {
+    const formattedAmount = netAmount.toLocaleString('th-TH');
+    const colorClass = netAmount >= 0 ? 'filter-amount-positive' : 'filter-amount-negative'; 
+    
+    // [FIX] ลบคลาสที่ใช้แสดงจำนวนเงินออก
+    return ''; 
+}
+
+function updateFilterButtonAmounts() {
+    // 1. Get filtered data
+    const todayData = filterData['today'];
+    const monthData = filterData['month'];
+    const today = new Date();
+
+    // 2. Update Today button (แสดงเฉพาะ "วันนี้")
+    const todayBtn = document.getElementById('today-filter-btn');
+    if (todayBtn) {
+        todayBtn.innerHTML = `วันนี้`; 
+    }
+
+    // 3. Update Month button (แสดงเฉพาะ "เดือนปัจจุบัน")
+    const monthBtn = document.getElementById('month-filter-btn');
+    if (monthBtn) {
+        const monthYearText = `${monthNames[today.getMonth()]} ${today.getFullYear() + 543}`;
+        monthBtn.innerHTML = `${monthYearText}`;
+    }
+}
+
 
 // ฟังก์ชันสำหรับอัปเดตข้อมูลใน Card และ Chart (สำหรับ Tab 'ทั่วไป' เท่านั้น)
 function updateAllTabContent(filterKey) {
-    const data = filterData[filterKey];
-    if (!data) return;
-
-    // อัปเดตส่วนหัวของ Card
-    document.getElementById('filter-title').textContent = data.title;
+    const data = filterData[filterKey] || allData;
+    
+    document.getElementById('filter-title').textContent = 'ทั้งหมด';
+    
+    // อัปเดตส่วนหัวของ Card: จำนวนรายการ และ ยอดรวมคงเหลือ
     document.getElementById('item-count').textContent = `${data.itemCount} รายการ`;
     
-    const totalAmountEl = document.getElementById('total-amount');
-    totalAmountEl.textContent = formatTHB(data.netAmount);
+    const netAmountDisplayEl = document.getElementById('net-amount-display');
+    netAmountDisplayEl.textContent = `${data.netAmount.toLocaleString('th-TH')} THB`;
+    netAmountDisplayEl.className = `net-amount-display ${data.netAmountClass}`; 
     
-    totalAmountEl.classList.remove('total-amount', 'net-negative');
-    totalAmountEl.classList.add(data.netAmountClass);
-    
-    // อัปเดตส่วนสรุปด้านล่าง
+    // อัปเดตส่วนสรุปด้านล่าง: รายการและยอดเงิน
     document.getElementById('income-count').textContent = `${data.incomeCount} รายการ`;
-    document.getElementById('income-amount').textContent = formatTHB(data.incomeAmount);
+    document.getElementById('income-amount-display').textContent = `${data.incomeAmount.toLocaleString('th-TH')} THB`; 
     
     document.getElementById('expense-count').textContent = `${data.expenseCount} รายการ`;
-    document.getElementById('expense-amount').textContent = formatTHB(data.expenseAmount);
+    document.getElementById('expense-amount-display').textContent = `${data.expenseAmount.toLocaleString('th-TH')} THB`; 
+    
 
     // อัปเดต Chart
     if (myChart) {
-        myChart.data.datasets[0].data = data.chartData;
-        // Chart สีต้องสอดคล้องกับตัวกรอง
-        if (filterKey === 'today') {
-            myChart.data.datasets[0].backgroundColor = ['#FFFFFF', '#f6a5a5']; // ขาว & แดง (ถ้ามีแต่รายจ่าย)
+        const income = data.incomeAmount;
+        const expense = data.expenseAmount;
+        
+        if (income === 0 && expense === 0) {
+            myChart.data.datasets[0].data = [1, 1];
+            myChart.data.datasets[0].backgroundColor = ['#eee', '#eee'];
         } else {
-            myChart.data.datasets[0].backgroundColor = ['#a8e6a1', '#f6a5a5']; // เขียว & แดง
+             // ถ้ามีค่า ให้ใช้ค่าจริง
+            myChart.data.datasets[0].data = [income, expense];
+            myChart.data.datasets[0].backgroundColor = ['#a8e6a1', '#f6a5a5'];
         }
         myChart.update();
     }
@@ -874,8 +887,8 @@ function initChart() {
         data: {
             labels: ['รายรับ', 'รายจ่าย'],
             datasets: [{
-                data: filterData['all'].chartData, 
-                backgroundColor: ['#a8e6a1', '#f6a5a5'], 
+                data: [allData.incomeAmount || 1, allData.expenseAmount || 1],
+                backgroundColor: allData.incomeAmount === 0 && allData.expenseAmount === 0 ? ['#eee', '#eee'] : ['#a8e6a1', '#f6a5a5'],
                 borderWidth: 0
             }]
         },
@@ -890,31 +903,23 @@ function initChart() {
                         usePointStyle: true,
                         pointStyle: 'circle',
                         padding: 20,
-                        // กำหนดฟอนต์สำหรับ Legend Labels
                         font: {
                             family: 'Kanit, sans-serif'
                         }
                     }
                 },
                 tooltip: {
-                    // กำหนดฟอนต์สำหรับ Tooltip Body
                     bodyFont: {
                         family: 'Kanit, sans-serif'
                     },
-                    // กำหนดฟอนต์สำหรับ Tooltip Title
                     titleFont: {
                         family: 'Kanit, sans-serif'
                     },
                     callbacks: {
                         label: function(context) {
                             let label = context.label || '';
-                            if (label) {
-                                label += ': ';
-                            }
-                            if (context.parsed !== null) {
-                                label += formatTHB(context.parsed);
-                            }
-                            return label;
+                            const value = context.parsed;
+                            return `${label}: ${value.toLocaleString('th-TH')} THB`;
                         }
                     }
                 }
@@ -923,28 +928,179 @@ function initChart() {
     });
 }
 
+// *** 2. ฟังก์ชันสร้าง Calendar Card ที่ดึงข้อมูลจาก transactions ***
+function generateCalendarCard(dateObj, allTransactions) {
+    const year = dateObj.getFullYear();
+    const month = dateObj.getMonth(); 
+    const today = new Date();
+
+    // 1. คำนวณยอดรวมรายรับ/รายจ่ายประจำเดือน
+    const monthTransactions = allTransactions.filter(t => 
+        t.date.getFullYear() === year && t.date.getMonth() === month
+    );
+    
+    const monthSummary = calculateSummary(monthTransactions);
+    
+    // 2. คำนวณยอดรวมรายรับ/รายจ่ายรายวัน 
+    const dailySummary = monthTransactions.reduce((acc, t) => {
+        const day = t.date.getDate();
+        if (!acc[day]) acc[day] = { income: 0, expense: 0 };
+        
+        if (t.type === 'income') {
+            acc[day].income += t.amount;
+        } else {
+            acc[day].expense += t.amount;
+        }
+        return acc;
+    }, {});
+
+
+    // 3. สร้างโครงสร้างปฏิทิน
+    const firstDayOfMonth = new Date(year, month, 1);
+    const firstDayOfNextMonth = new Date(year, month + 1, 1); 
+    const lastDayOfMonth = new Date(firstDayOfNextMonth - 1); 
+    const daysInMonth = lastDayOfMonth.getDate(); 
+    const firstDayWeekday = firstDayOfMonth.getDay(); // 0=อาทิตย์, 1=จันทร์
+    const lastDayOfPrevMonth = new Date(firstDayOfMonth - 1).getDate(); 
+    
+    const monthTitleText = `${monthNames[month]} ${year + 543}`; // ปีพุทธศักราช
+
+    let html = `
+    <div class="calendar-card">
+      <div class="month-header">
+        <h3 class="month-title">${monthTitleText}</h3>
+        <div class="month-summary">
+          <span class="income-text">${monthSummary.incomeAmount.toLocaleString('th-TH')} THB</span>
+          <span class="expense-text">${monthSummary.expenseAmount.toLocaleString('th-TH')} THB</span>
+          <span class="net-text">${monthSummary.netAmount.toLocaleString('th-TH')} THB</span>
+        </div>
+      </div>
+      
+      <div class="calendar-grid">
+        <span class="day-header">อา</span>
+        <span class="day-header">จ</span>
+        <span class="day-header">อ</span>
+        <span class="day-header">พ</span>
+        <span class="day-header">พฤ</span>
+        <span class="day-header">ศ</span>
+        <span class="day-header">ส</span>
+    `;
+
+    // เติมเต็มช่องว่างของเดือนก่อนหน้า
+    for (let i = 0; i < firstDayWeekday; i++) {
+        html += `<span class="day-cell inactive-month"><span class="date-num">${lastDayOfPrevMonth - (firstDayWeekday - 1) + i}</span></span>`;
+    }
+
+    // ใส่เซลล์ของเดือนปัจจุบัน + ข้อมูลธุรกรรมจริง
+    for (let day = 1; day <= daysInMonth; day++) {
+        const isToday = (year === today.getFullYear() && month === today.getMonth() && day === today.getDate());
+        const todayClass = isToday ? ' current-date' : '';
+        
+        const summary = dailySummary[day] || { income: 0, expense: 0 };
+        
+        // FIX: แสดงจำนวนเงินที่คำนวณได้จริงในช่องปฏิทิน
+        const incomeHTML = summary.income > 0 ? `<span class="income-value">${summary.income.toLocaleString('th-TH')}</span>` : '';
+        const expenseHTML = summary.expense > 0 ? `<span class="expense-value">${summary.expense.toLocaleString('th-TH')}</span>` : '';
+
+        html += `
+        <span class="day-cell${todayClass}">
+          <span class="date-num">${day}</span>
+          ${incomeHTML}
+          ${expenseHTML}
+        </span>
+        `;
+    }
+
+    // เติมเต็มช่องว่างของเดือนถัดไป
+    const totalCells = firstDayWeekday + daysInMonth;
+    const remainingCells = (Math.ceil(totalCells / 7) * 7) - totalCells; // คำนวณให้เต็มแถวสุดท้าย
+    
+    for (let i = 1; i <= remainingCells; i++) {
+        html += `<span class="day-cell inactive-month"><span class="date-num">${i}</span></span>`;
+    }
+    
+    html += `
+      </div>
+    </div>
+    `;
+    
+    return html;
+}
+
+// *** 3. ฟังก์ชันหลักสำหรับแสดงปฏิทินที่ขยายช่วงเดือน ***
+function renderRealtimeCalendar() {
+    const allTransactions = getTransactions();
+    const today = new Date();
+    
+    const currentMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+    const prevMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+    const nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+    
+    const monthsToShow = new Set();
+    
+    monthsToShow.add(`${prevMonth.getFullYear()}-${prevMonth.getMonth()}`);
+    monthsToShow.add(`${currentMonth.getFullYear()}-${currentMonth.getMonth()}`);
+    monthsToShow.add(`${nextMonth.getFullYear()}-${nextMonth.getMonth()}`);
+    
+    // เพิ่มเดือนที่มีรายการ transactions อยู่ด้วย
+    allTransactions.forEach(t => {
+        if (t.date instanceof Date && !isNaN(t.date)) {
+             monthsToShow.add(`${t.date.getFullYear()}-${t.date.getMonth()}`);
+        }
+    });
+    
+    const sortedMonths = Array.from(monthsToShow).map(m => {
+        const [year, month] = m.split('-').map(Number);
+        return new Date(year, month, 1);
+    }).sort((a, b) => a - b);
+
+
+    const container = document.getElementById('calendar-cards-container');
+    container.innerHTML = ''; 
+
+    sortedMonths.forEach(monthDate => {
+        container.innerHTML += generateCalendarCard(monthDate, allTransactions);
+    });
+    
+    // 5. อัปเดตปุ่ม Filter amounts
+    updateFilterButtonAmounts();
+}
+
+
 // *** ฟังก์ชันสำหรับจัดการการคลิกปุ่ม Tab (ทั่วไป/รายจ่าย/รายรับ) ***
 function setActiveTab(clickedElement, tabKey) {
-    // 1. จัดการ Active State ของปุ่ม Tab
     const tabs = document.querySelectorAll('.tabs button');
     tabs.forEach(button => {
         button.classList.remove('active');
     });
     clickedElement.classList.add('active');
     
-    // 2. ซ่อน/แสดง เนื้อหาตาม Tab
     document.getElementById('all-content').style.display = 'none';
     document.getElementById('expense-content').style.display = 'none';
     document.getElementById('income-content').style.display = 'none';
 
+    // *** NEW: อัปเดต filterData ทุกครั้งที่เปลี่ยน Tab ***
+    const allTransactions = getTransactions();
+    filterData['all'] = calculateSummary(allTransactions);
+    filterData['today'] = calculateSummary(allTransactions.filter(t => {
+        const today = new Date();
+        return t.date.getDate() === today.getDate() && t.date.getMonth() === today.getMonth() && t.date.getFullYear() === today.getFullYear();
+    }));
+    filterData['month'] = calculateSummary(allTransactions.filter(t => {
+        const today = new Date();
+        return t.date.getMonth() === today.getMonth() && t.date.getFullYear() === today.getFullYear();
+    }));
+    updateFilterButtonAmounts(); // รีเฟรชปุ่ม
+
     if (tabKey === 'all') {
         document.getElementById('all-content').style.display = 'block';
-        // เมื่อกลับไป Tab 'ทั่วไป' ให้อัปเดตเนื้อหาตาม Filter ปัจจุบัน
         updateAllTabContent(currentActiveFilter); 
     } else if (tabKey === 'expense') {
         document.getElementById('expense-content').style.display = 'block';
+        renderCategoryContent('expense', currentActiveFilter);
     } else if (tabKey === 'income') {
         document.getElementById('income-content').style.display = 'block';
+        renderCategoryContent('income', currentActiveFilter);
     }
     
     currentActiveTab = tabKey;
@@ -952,7 +1108,6 @@ function setActiveTab(clickedElement, tabKey) {
 
 // *** ฟังก์ชันสำหรับจัดการการคลิกปุ่มตัวกรอง (Filters) ***
 function setActiveFilter(clickedElement, filterKey) {
-    // 1. จัดการ Active State ของปุ่ม Filter
     const filters = document.querySelectorAll('.filters button');
     filters.forEach(button => {
         button.classList.remove('active-filter');
@@ -968,16 +1123,18 @@ function setActiveFilter(clickedElement, filterKey) {
         // แสดงหน้าปฏิทิน
         summaryView.style.display = 'none';
         calendarView.style.display = 'block';
+        renderRealtimeCalendar(); 
     } else {
         // แสดงหน้าสรุป
         calendarView.style.display = 'none';
         summaryView.style.display = 'block';
         
-        // ถ้าอยู่ Tab 'ทั่วไป' ให้อัปเดตข้อมูลในหน้าสรุป
         if (currentActiveTab === 'all') {
             updateAllTabContent(filterKey);
-        } else {
-            // ถ้าอยู่ Tab 'รายจ่าย'/'รายรับ' จะไม่ทำอะไร (จะแสดง Category Breakdown คงที่)
+        } else if (currentActiveTab === 'expense') {
+            renderCategoryContent('expense', filterKey);
+        } else if (currentActiveTab === 'income') {
+            renderCategoryContent('income', filterKey);
         }
     }
 }
@@ -987,11 +1144,9 @@ function showSummaryView() {
     document.getElementById('calendar-view').style.display = 'none';
     document.getElementById('summary-view').style.display = 'block';
 
-    // เซ็ตให้ปุ่ม 'ทั่วไป' เป็น Active เมื่อกลับมา
     const allTab = document.querySelector('.tabs button:first-child');
     setActiveTab(allTab, 'all'); 
 
-    // เซ็ตให้ปุ่ม 'ทั้งหมด' เป็น Active (หรือ Filter ล่าสุด)
     const allFilter = document.querySelector('#date-filters button:first-child');
     setActiveFilter(allFilter, 'all'); 
 }
@@ -1008,8 +1163,29 @@ function setActiveIcon(clickedElement) {
 // เริ่มต้น Chart และข้อมูลเริ่มต้นเมื่อโหลดหน้าเว็บเสร็จ
 window.onload = function() {
     initChart();
-    // โหลดข้อมูล "ทั้งหมด" เป็นค่าเริ่มต้น
+    
+    // โหลดข้อมูลและคำนวณใหม่เมื่อ DOM พร้อม
+    const allTransactions = getTransactions();
+    filterData['all'] = calculateSummary(allTransactions);
+    filterData['today'] = calculateSummary(allTransactions.filter(t => {
+        const today = new Date();
+        return t.date.getDate() === today.getDate() && t.date.getMonth() === today.getMonth() && t.date.getFullYear() === today.getFullYear();
+    }));
+    filterData['month'] = calculateSummary(allTransactions.filter(t => {
+        const today = new Date();
+        return t.date.getMonth() === today.getMonth() && t.date.getFullYear() === today.getFullYear();
+    }));
+    
     updateAllTabContent('all'); 
+    renderRealtimeCalendar(); // จะเรียก updateFilterButtonAmounts() ข้างใน
+    
+    const today = new Date();
+    const monthFilterBtn = document.getElementById('month-filter-btn');
+    // ตั้งค่าข้อความเริ่มต้น
+    monthFilterBtn.textContent = `${monthNames[today.getMonth()]} ${today.getFullYear() + 543}`;
+    
+    // อัปเดตปุ่มด้วยจำนวนเงิน
+    updateFilterButtonAmounts();
 };
 </script>
 
